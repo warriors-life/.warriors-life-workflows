@@ -1,0 +1,187 @@
+# TODO: maybe cache actions/checkout's output
+
+name: General tests
+
+on:
+  workflow_call:
+    inputs:
+      node-code-pre-test:
+        required: false
+        type: string
+    secrets:
+      SNYK_TOKEN:
+        required: false
+
+permissions: {}
+
+defaults:
+  runs-on: ubuntu-latest
+
+jobs:
+  scorecard:
+    if: github.event_name == 'pull_request' || github.ref == 'ref/heads/dev'
+    name: Check supply chain with Scorecard
+    permissions:
+      actions: read
+      contents: read
+    steps:
+      - name: Harden runner
+        uses: step-security/harden-runner@6b3083af2869dc3314a0257a42f4af696cc79ba3
+        with:
+          disable-sudo: true
+          egress-policy: block
+          allowed-endpoints: >
+            api.github.com:443
+            api.osv.dev:443
+            auth.docker.io:443
+            bestpractices.coreinfrastructure.org:443
+            github.com:443
+            index.docker.io:443
+      - name: Checkout
+        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
+        with:
+          persist-credentials: false
+      - name: Run analysis
+        uses: ossf/scorecard-action@80e868c13c90f172d68d1f4501dee99e2479f7af
+        with:
+          results_file: scorecard.sarif
+          results_format: sarif
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload output
+        uses: actions/upload-artifact@0b7f8abb1508181956e8e162db84b466c27e18ce
+        with:
+          name: Scorecard
+          path: scorecard.sarif
+      - name: Upload SARIF to dashboard
+        if: "!github.event.repository.private"
+        uses: github/codeql-action/upload-sarif@f31a31c052207cc13b328d6295c5b728bb49568c
+        with:
+          sarif_file: scorecard.sarif
+          category: Scorecard
+
+  dependency-review:
+    if: "!github.event.repository.private"
+    name: Dependency review
+    steps:
+      - name: Harden runner
+        uses: step-security/harden-runner@6b3083af2869dc3314a0257a42f4af696cc79ba3
+        with:
+          disable-sudo: true
+          egress-policy: block
+          allowed-endpoints: >
+            api.github.com:443
+            github.com:443
+      - name: Checkout
+        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
+        with:
+          persist-credentials: false
+      - name: Dependency review
+        uses: actions/dependency-review-action@f46c48ed6d4f1227fb2d9ea62bf6bcbed315589e
+
+  codeql:
+    if: "!github.event.repository.private"
+    name: CodeQL scan
+    steps:
+      - name: Harden runner
+        uses: step-security/harden-runner@6b3083af2869dc3314a0257a42f4af696cc79ba3
+        with:
+          disable-sudo: true
+          egress-policy: block
+          allowed-endpoints: >
+            api.github.com:443
+            github.com:443
+      - name: Checkout
+        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
+        with:
+          persist-credentials: false
+      - name: Init
+        uses: github/codeql-action/init@f31a31c052207cc13b328d6295c5b728bb49568c
+      - name: Scan
+        uses: github/codeql-action/analyze@f31a31c052207cc13b328d6295c5b728bb49568c
+
+  run-snyk:
+    name: Run Snyk?
+    outputs:
+      run-snyk: ${{ steps.set-outputs.outputs.run-snyk }}
+    steps:
+      - name: Harden runner
+        uses: step-security/harden-runner@6b3083af2869dc3314a0257a42f4af696cc79ba3
+        with:
+          disable-sudo: true
+          egress-policy: block
+          allowed-endpoints:
+      - name: Set outputs
+        id: set-outputs
+        run: |
+          echo "run-snyk=${{ secrets.SNYK_TOKEN != '' }}" >> $GITHUB_OUTPUT
+
+  snyk-js:
+    if: needs.run-snyk.outputs.run-snyk == 'true'
+    needs: run-snyk
+    name: Check JS code for vulnerabilities with Snyk
+    permissions:
+      contents: read
+    steps:
+      - name: Harden runner
+        uses: step-security/harden-runner@6b3083af2869dc3314a0257a42f4af696cc79ba3
+        with:
+          disable-sudo: true
+          egress-policy: block
+          allowed-endpoints: >
+            api.snyk.io:443
+            github.com:443
+      - name: Checkout
+        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
+        with:
+          persist-credentials: false
+      - name: Run Snyk
+        uses: snyk/actions/node@806182742461562b67788a64410098c9d9b96adb
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --sarif-file-output=snyk-js.sarif
+      - name: Upload output
+        uses: actions/upload-artifact@0b7f8abb1508181956e8e162db84b466c27e18ce
+        with:
+          name: Snyk (JS)
+          path: snyk-js.sarif
+      - name: Upload SARIF to dashboard
+        if: "!github.event.repository.private"
+        uses: github/codeql-action/upload-sarif@f31a31c052207cc13b328d6295c5b728bb49568c
+        with:
+          sarif_file: snyk-js.sarif
+          category: Snyk (JS)
+
+  test-unit:
+    name: Run unit tests
+    permissions:
+      contents: read
+    defaults:
+      run:
+        working-directory: test
+    steps:
+      - name: Harden runner
+        uses: step-security/harden-runner@6b3083af2869dc3314a0257a42f4af696cc79ba3
+        with:
+          disable-sudo: true
+          egress-policy: block
+          allowed-endpoints: >
+            github.com:443
+      - name: Checkout
+        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
+        with:
+          persist-credentials: false
+      - name: Setup Node
+        uses: actions/setup-node@64ed1c7eab4cce3362f8c340dee64e5eaeef8f7c
+        with:
+          node-version: 18.16.0
+      - name: Install Node dependencies
+        run: npm ci
+      - name: Run pre-tests code
+        run: eval "$CODE"
+        env:
+          code: ${{ inputs.node-code-pre-test }}
+      - name: Run unit tests
+        run: npm test
+        env:
+          NODE_ENV: ${{ (startsWith(github.ref, 'ref/heads/release') || startsWith(github.base_ref, 'ref/heads/release')) && 'production' || 'development' }}

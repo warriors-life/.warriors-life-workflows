@@ -1,0 +1,9 @@
+.gitattributes  text
+
+LICENSE         text
+
+*.md            text diff=markdown
+
+*.yml           text
+
+.gitattributes  export-ignore
