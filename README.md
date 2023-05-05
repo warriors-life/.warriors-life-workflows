@@ -2,7 +2,7 @@
 This repository stores reusable Warriors Life's GitHub Actions workflows.
 
 ## License
-[LICENSE](MIT)
+[MIT](LICENSE)
 
 ## Usage
-See [https://github.com/warriors-life/.warriors-life-template/blob/dev/.github/workflows/build.yml](this) for an example.
+See [this](https://github.com/warriors-life/.warriors-life-template/blob/dev/.github/workflows/build.yml) for an example.
