@@ -14,9 +14,6 @@ on:
 
 permissions: {}
 
-defaults:
-  runs-on: ubuntu-latest
-
 jobs:
   scorecard:
     if: github.event_name == 'pull_request' || github.ref == 'ref/heads/dev'
@@ -24,9 +21,10 @@ jobs:
     permissions:
       actions: read
       contents: read
+    runs-on: ubuntu-latest
     steps:
       - name: Harden runner
-        uses: step-security/harden-runner@6b3083af2869dc3314a0257a42f4af696cc79ba3
+        uses: step-security/harden-runner@128a63446a954579617e875aaab7d2978154e969
         with:
           disable-sudo: true
           egress-policy: block
@@ -62,9 +60,10 @@ jobs:
   dependency-review:
     if: "!github.event.repository.private"
     name: Dependency review
+    runs-on: ubuntu-latest
     steps:
       - name: Harden runner
-        uses: step-security/harden-runner@6b3083af2869dc3314a0257a42f4af696cc79ba3
+        uses: step-security/harden-runner@128a63446a954579617e875aaab7d2978154e969
         with:
           disable-sudo: true
           egress-policy: block
@@ -81,9 +80,10 @@ jobs:
   codeql:
     if: "!github.event.repository.private"
     name: CodeQL scan
+    runs-on: ubuntu-latest
     steps:
       - name: Harden runner
-        uses: step-security/harden-runner@6b3083af2869dc3314a0257a42f4af696cc79ba3
+        uses: step-security/harden-runner@128a63446a954579617e875aaab7d2978154e969
         with:
           disable-sudo: true
           egress-policy: block
@@ -101,11 +101,12 @@ jobs:
 
   run-snyk:
     name: Run Snyk?
+    runs-on: ubuntu-latest
     outputs:
       run-snyk: ${{ steps.set-outputs.outputs.run-snyk }}
     steps:
       - name: Harden runner
-        uses: step-security/harden-runner@6b3083af2869dc3314a0257a42f4af696cc79ba3
+        uses: step-security/harden-runner@128a63446a954579617e875aaab7d2978154e969
         with:
           disable-sudo: true
           egress-policy: block
@@ -121,9 +122,10 @@ jobs:
     name: Check JS code for vulnerabilities with Snyk
     permissions:
       contents: read
+    runs-on: ubuntu-latest
     steps:
       - name: Harden runner
-        uses: step-security/harden-runner@6b3083af2869dc3314a0257a42f4af696cc79ba3
+        uses: step-security/harden-runner@128a63446a954579617e875aaab7d2978154e969
         with:
           disable-sudo: true
           egress-policy: block
@@ -159,9 +161,10 @@ jobs:
     defaults:
       run:
         working-directory: test
+    runs-on: ubuntu-latest
     steps:
       - name: Harden runner
-        uses: step-security/harden-runner@6b3083af2869dc3314a0257a42f4af696cc79ba3
+        uses: step-security/harden-runner@128a63446a954579617e875aaab7d2978154e969
         with:
           disable-sudo: true
           egress-policy: block
