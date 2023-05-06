@@ -24,7 +24,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Harden runner
-        uses: step-security/harden-runner@6b3083af2869dc3314a0257a42f4af696cc79ba3
+        uses: step-security/harden-runner@128a63446a954579617e875aaab7d2978154e969
         with:
           disable-sudo: true
           egress-policy: block
@@ -63,7 +63,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Harden runner
-        uses: step-security/harden-runner@6b3083af2869dc3314a0257a42f4af696cc79ba3
+        uses: step-security/harden-runner@128a63446a954579617e875aaab7d2978154e969
         with:
           disable-sudo: true
           egress-policy: block
@@ -83,7 +83,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Harden runner
-        uses: step-security/harden-runner@6b3083af2869dc3314a0257a42f4af696cc79ba3
+        uses: step-security/harden-runner@128a63446a954579617e875aaab7d2978154e969
         with:
           disable-sudo: true
           egress-policy: block
@@ -106,7 +106,7 @@ jobs:
       run-snyk: ${{ steps.set-outputs.outputs.run-snyk }}
     steps:
       - name: Harden runner
-        uses: step-security/harden-runner@6b3083af2869dc3314a0257a42f4af696cc79ba3
+        uses: step-security/harden-runner@128a63446a954579617e875aaab7d2978154e969
         with:
           disable-sudo: true
           egress-policy: block
@@ -125,7 +125,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Harden runner
-        uses: step-security/harden-runner@6b3083af2869dc3314a0257a42f4af696cc79ba3
+        uses: step-security/harden-runner@128a63446a954579617e875aaab7d2978154e969
         with:
           disable-sudo: true
           egress-policy: block
@@ -164,7 +164,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Harden runner
-        uses: step-security/harden-runner@6b3083af2869dc3314a0257a42f4af696cc79ba3
+        uses: step-security/harden-runner@128a63446a954579617e875aaab7d2978154e969
         with:
           disable-sudo: true
           egress-policy: block
