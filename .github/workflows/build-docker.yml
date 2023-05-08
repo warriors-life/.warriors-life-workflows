@@ -254,4 +254,4 @@ jobs:
             docker tag ${{ needs.build.outputs.test-tag }} "$tag"
           done <<< "${{ needs.metadata.outputs.tags }}"
       - name: Push Docker image
-        run: docker push -a ${{ env.REGISTRY && (env.REGISTRY + '/' + inputs.image-name) || inputs.image-name }} # TODO: change this hack when https://github.com/docker/build-push-action/issues/17 will be truly fixed
+        run: docker push -a ${{ env.REGISTRY && format('{0}/{1}', env.REGISTRY, inputs.image-name) || inputs.image-name }} # TODO: change this hack when https://github.com/docker/build-push-action/issues/17 will be truly fixed
