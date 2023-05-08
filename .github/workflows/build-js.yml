@@ -1,0 +1,51 @@
+name: Build
+
+on:
+  workflow_call:
+    inputs:
+      node-code-pre-test:
+        required: false
+        type: string
+    secrets:
+      SNYK_TOKEN:
+        required: false
+      NPM_TOKEN:
+        required: false
+
+env:
+  REGISTRY: ${{ github.event.repository.private && 'https://npm.pkg.github.com/' || 'https://registry.npmjs.org/' }}
+
+permissions: {}
+
+jobs:
+  call-workflow:
+    uses: ./.github/workflows/build-general.yml
+    secrets: inherit
+    permissions:
+      actions: read
+      contents: read
+    with:
+      node-code-pre-test: ${{ inputs.node-code-pre-test }}
+
+  push:
+    if: github.ref_type == 'tag'
+    needs: call-workflow
+    name: Publish package in the registry
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+    steps:
+      - name: Harden runner
+        uses: step-security/harden-runner@128a63446a954579617e875aaab7d2978154e969
+        with:
+          disable-sudo: true
+          egress-policy: block
+          allowed-endpoints: >
+            ghcr.io:443
+      - name: Publish package
+        uses: JS-DevTools/npm-publish@541aa6b21b4a1e9990c95a92c21adc16b35e9551
+        with:
+          registry: ${{ env.REGISTRY }}
+          token: ${{ (env.REGISTRY == 'https://npm.pkg.github.com/') && secrets.GITHUB_TOKEN || secrets.NPM_TOKEN }}
+          package: src
+          provenance: true
