@@ -114,6 +114,9 @@ jobs:
           disable-sudo: true
           egress-policy: block
           allowed-endpoints:
+      - name: Test
+        run: |
+          echo '${{ toJSON(github) }}'
       - name: Set outputs
         id: set-outputs
         run: |
