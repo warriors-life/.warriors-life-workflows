@@ -19,7 +19,7 @@ permissions: {}
 
 jobs:
   scorecard:
-    if: github.event_name == 'pull_request' || github.ref == 'ref/heads/dev'
+    if: github.event_name == 'pull_request' || github.ref == 'refs/heads/dev'
     name: Check supply chain with Scorecard
     permissions:
       actions: read
@@ -113,7 +113,7 @@ jobs:
         with:
           disable-sudo: true
           egress-policy: block
-          allowed-endpoints:
+          allowed-endpoints: ''
       - name: Set outputs
         id: set-outputs
         run: |
