@@ -46,6 +46,6 @@ jobs:
         uses: JS-DevTools/npm-publish@541aa6b21b4a1e9990c95a92c21adc16b35e9551
         with:
           registry: ${{ env.REGISTRY }}
-          token: ${{ (env.REGISTRY == 'https://npm.pkg.github.com/') && secrets.GITHUB_TOKEN || secrets.NPM_TOKEN }}
+          token: ${{ (env.REGISTRY == 'https://npm.pkg.github.com/') && github.token || secrets.NPM_TOKEN }}
           package: src
           provenance: true

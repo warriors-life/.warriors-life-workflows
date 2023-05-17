@@ -246,7 +246,7 @@ jobs:
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ (env.REGISTRY == 'ghcr.io') && github.actor || steps.split.outputs.username }}
-          password: ${{ (env.REGISTRY == 'ghcr.io') && secrets.GITHUB_TOKEN || secrets.DOCKERHUB_TOKEN }}
+          password: ${{ (env.REGISTRY == 'ghcr.io') && github.token || secrets.DOCKERHUB_TOKEN }}
       - name: Tag Docker image properly
         run: |
           while IFS= read -r tag; do
