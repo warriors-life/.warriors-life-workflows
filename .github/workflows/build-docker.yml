@@ -28,8 +28,11 @@ jobs:
     uses: ./.github/workflows/build-general.yml
     secrets: inherit
     permissions:
+      security-events: write
       actions: read
       contents: read
+      issues: read
+      pull-requests: read
     with:
       node-code-pre-test: DISABLE
 
@@ -135,6 +138,8 @@ jobs:
     if: needs.call-workflow.outputs.run-snyk == 'true'
     needs: [build, call-workflow]
     name: Check Docker image for vulnerabilities with Snyk
+    permissions:
+      security-events: write
     runs-on: ubuntu-latest
     steps:
       - name: Harden runner

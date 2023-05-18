@@ -22,8 +22,11 @@ jobs:
     if: github.event_name == 'pull_request' || github.ref == 'refs/heads/dev'
     name: Check supply chain with Scorecard
     permissions:
+      security-events: write
       actions: read
       contents: read
+      issues: read
+      pull-requests: read
     runs-on: ubuntu-latest
     steps:
       - name: Harden runner
@@ -82,6 +85,8 @@ jobs:
   codeql:
     if: "!github.event.repository.private"
     name: CodeQL scan
+    permissions:
+      security-events: write
     runs-on: ubuntu-latest
     steps:
       - name: Harden runner
@@ -123,6 +128,7 @@ jobs:
     needs: run-snyk
     name: Check JS code for vulnerabilities with Snyk
     permissions:
+      security-events: write
       contents: read
     runs-on: ubuntu-latest
     steps:

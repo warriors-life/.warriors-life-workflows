@@ -22,8 +22,11 @@ jobs:
     uses: ./.github/workflows/build-general.yml
     secrets: inherit
     permissions:
+      security-events: write
       actions: read
       contents: read
+      issues: read
+      pull-requests: read
     with:
       node-code-pre-test: ${{ inputs.node-code-pre-test }}
 
