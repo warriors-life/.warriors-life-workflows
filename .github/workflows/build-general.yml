@@ -36,11 +36,11 @@ jobs:
           egress-policy: block
           allowed-endpoints: >
             api.github.com:443
-            api.osv.dev:443
-            auth.docker.io:443
-            bestpractices.coreinfrastructure.org:443
             github.com:443
+            auth.docker.io:443
             index.docker.io:443
+            api.osv.dev:443
+            bestpractices.coreinfrastructure.org:443
       - name: Checkout
         uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
         with:
@@ -138,8 +138,8 @@ jobs:
           disable-sudo: true
           egress-policy: block
           allowed-endpoints: >
-            api.snyk.io:443
             github.com:443
+            api.snyk.io:443
       - name: Checkout
         uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
         with:
@@ -180,8 +180,8 @@ jobs:
           allowed-endpoints: >
             api.github.com:443
             github.com:443
-            registry.npmjs.org:443
             objects.githubusercontent.com:443
+            registry.npmjs.org:443
       - name: Checkout
         uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
         with:

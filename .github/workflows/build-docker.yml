@@ -101,12 +101,12 @@ jobs:
           disable-sudo: true
           egress-policy: block
           allowed-endpoints: >
-            auth.docker.io:443
-            dl-cdn.alpinelinux.org:443
             github.com:443
-            production.cloudflare.docker.com:443
             registry-1.docker.io:443
+            auth.docker.io:443
             docker.io:443
+            production.cloudflare.docker.com:443
+            dl-cdn.alpinelinux.org:443
       - name: Checkout
         uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
         with:
@@ -193,7 +193,11 @@ jobs:
           allowed-endpoints: >
             api.github.com:443
             github.com:443
+            objects.githubusercontent.com:443
             registry.npmjs.org:443
+            registry-1.docker.io:443
+            auth.docker.io:443
+            production.cloudflare.docker.com:443
       - name: Checkout
         uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
         with:
