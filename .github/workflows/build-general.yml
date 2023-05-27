@@ -41,6 +41,7 @@ jobs:
             index.docker.io:443
             api.osv.dev:443
             bestpractices.coreinfrastructure.org:443
+            oss-fuzz-build-logs.storage.googleapis.com:443
       - name: Checkout
         uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
         with:
