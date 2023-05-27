@@ -12,6 +12,11 @@ inputs:
       registry-1.docker.io:443
       auth.docker.io:443
       production.cloudflare.docker.com:443
+  working-directory:
+    description: 'Working directory'
+    required: false
+    default: test
+
 runs:
   using: "composite"
   steps:
@@ -38,3 +43,4 @@ runs:
       env:
         CODE: ${{ inputs.code }}
       shell: bash
+      working-directory: ${{ inputs.working-directory }}
