@@ -1,0 +1,34 @@
+name: 'Test Docker image'
+inputs:
+  code:
+    description: 'Code to run'
+    required: true
+  allowed-endpoints:
+    description: 'Allowed endpoints'
+    required: false
+    default: >
+      github.com:443
+runs:
+  using: "composite"
+  steps:
+    - name: Harden runner
+      uses: step-security/harden-runner@128a63446a954579617e875aaab7d2978154e969
+      with:
+        disable-sudo: true
+        egress-policy: block
+        allowed-endpoints: ${{ inputs.allowed-endpoints }}
+    - name: Checkout
+      uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
+      with:
+        persist-credentials: false
+    - name: Download Docker image
+      uses: actions/download-artifact@9bc31d5ccc31df68ecc42ccf4149144866c47d8a
+      with:
+        name: Docker image
+        path: /tmp
+    - name: Load image
+      run: docker load --input /tmp/image.tar
+    - name: Run code
+        run: eval "$CODE"
+        env:
+          CODE: ${{ inputs.code }}
