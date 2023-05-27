@@ -7,7 +7,11 @@ inputs:
     description: 'Allowed endpoints'
     required: false
     default: >
+      api.github.com:443
       github.com:443
+      registry-1.docker.io:443
+      auth.docker.io:443
+      production.cloudflare.docker.com:443
 runs:
   using: "composite"
   steps:
