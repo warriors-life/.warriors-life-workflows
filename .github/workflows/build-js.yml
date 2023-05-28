@@ -52,3 +52,48 @@ jobs:
           token: ${{ (env.REGISTRY == 'https://npm.pkg.github.com/') && github.token || secrets.NPM_TOKEN }}
           package: src
           provenance: true
+
+  release:
+    if: github.ref_type == 'tag'
+    needs: push
+    name: Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Harden runner
+        uses: step-security/harden-runner@128a63446a954579617e875aaab7d2978154e969
+        with:
+          disable-sudo: true
+          egress-policy: block
+          allowed-endpoints: >
+            api.github.com:443
+            github.com:443
+      - name: Checkout
+        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
+        with:
+          persist-credentials: false
+      - name: Extract release notes
+        id: extract-release-notes
+        uses: ffurrer2/extract-release-notes@f2dd00dec4102dbc6d7bdf804dfd85546dfa1f0b
+      - name: Import GPG key
+        uses: crazy-max/ghaction-import-gpg@72b6676b71ab476b77e676928516f6982eef7a41
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE }}
+      - name: Sign files
+        run: |
+          git archive --format=tar.gz --prefix="$tag/" -o "../$tag.tar.gz" "$tag"
+          gpg --armor --detach-sign "../$tag.tar.gz"
+          npm pack src/
+          gpg --armor --detach-sign *.tgz
+        env:
+          tag: ${{ github.ref_name }}
+      - name: Release
+        uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844
+        with:
+          files: |
+            *.tgz
+            *.tgz.asc
+            ../${{ github.ref_name }}.tar.gz.asc
+          body: ${{ steps.extract-release-notes.outputs.release_notes }}
