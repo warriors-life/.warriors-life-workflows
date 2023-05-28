@@ -91,7 +91,7 @@ jobs:
           repository: ${{ github.event.repository.name }}
       - name: Sign files
         run: |
-          git archive --format=tar.gz --prefix="$archivename/" -o "../$archivename.tar.gz" "$tag"
+          git -c tar.tar.gz.command='gzip -cn' archive --format=tar.gz --prefix="$archivename/" -o "../$archivename.tar.gz" "$tag"
           gpg --armor --detach-sign "../$archivename.tar.gz"
           npm pack src/
           gpg --armor --detach-sign *.tgz
