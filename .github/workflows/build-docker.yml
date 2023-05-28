@@ -303,7 +303,7 @@ jobs:
       - name: Get archive name
         id: archive-name
         run: |
-          echo "$name=$repository-${tag#v}" >> $GITHUB_ENV
+          echo "name=$repository-${tag#v}" >> $GITHUB_OUTPUT
         env:
           tag: ${{ github.ref_name }}
           repository: ${{ github.event.repository.name }}
