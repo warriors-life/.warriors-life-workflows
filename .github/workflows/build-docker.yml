@@ -81,9 +81,9 @@ jobs:
           tags: |
             type=ref,event=branch
             type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=semver,pattern={{major}},enable=${{ !startsWith(github.ref, 'refs/tags/v0.') }}
-            type=sha,prefix={{branch}}-
+            type=semver,pattern={{major}}.{{minor}},enable=${{ !startsWith(github.ref_name, 'v0.0') }}
+            type=semver,pattern={{major}},enable=${{ !startsWith(github.ref_name, 'v0') }}
+            type=sha,prefix={{branch}}-,enable=${{ github.ref_type != 'tag' }}
             type=schedule,pattern=weekly
 
   build:
