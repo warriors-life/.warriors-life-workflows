@@ -309,12 +309,12 @@ jobs:
           repository: ${{ github.event.repository.name }}
       - name: Sign files
         run: |
-          git archive --format=tar.gz --prefix="$archive-name/" -o "../$archive-name.tar.gz" "$tag"
-          gpg --armor --detach-sign "../$archive-name.tar.gz"
+          git archive --format=tar.gz --prefix="$archivename/" -o "../$archivename.tar.gz" "$tag"
+          gpg --armor --detach-sign "../$archivename.tar.gz"
           gpg --armor --detach-sign /tmp/image.tar
         env:
           tag: ${{ github.ref_name }}
-          archive-name: ${{ steps.archive-name.outputs.name }}
+          archivename: ${{ steps.archive-name.outputs.name }}
       - name: Release
         uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844
         with:
