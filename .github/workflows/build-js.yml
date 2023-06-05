@@ -46,7 +46,7 @@ jobs:
           allowed-endpoints: >
             ghcr.io:443
       - name: Publish package
-        uses: JS-DevTools/npm-publish@541aa6b21b4a1e9990c95a92c21adc16b35e9551
+        uses: JS-DevTools/npm-publish@a25b4180b728b0279fca97d4e5bccf391685aead
         with:
           registry: ${{ env.REGISTRY }}
           token: ${{ (env.REGISTRY == 'https://npm.pkg.github.com/') && github.token || secrets.NPM_TOKEN }}
