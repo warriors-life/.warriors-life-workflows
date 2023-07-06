@@ -128,6 +128,8 @@ jobs:
           cache-to: type=gha,mode=max
           outputs: type=docker,dest=/tmp/image.tar
           labels: ${{ needs.metadata.outputs.labels }}
+          provenance: true
+          sbom: true
       - name: Upload Docker image
         uses: actions/upload-artifact@0b7f8abb1508181956e8e162db84b466c27e18ce
         with:
