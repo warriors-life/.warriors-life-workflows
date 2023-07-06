@@ -126,7 +126,7 @@ jobs:
           tags: ${{ steps.set-outputs.outputs.test-tag }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          outputs: type=docker,dest=/tmp/image.tar
+          outputs: type=oci,dest=/tmp/image.tar
           labels: ${{ needs.metadata.outputs.labels }}
           provenance: true
           sbom: true
