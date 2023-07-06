@@ -119,7 +119,7 @@ jobs:
         run: |
           echo "test-tag=${{ inputs.image-name }}:test" >> $GITHUB_OUTPUT
       - name: Build
-        uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
+        uses: docker/build-push-action@2eb1c1961a95fc15694676618e422e8ba1d63825
         with:
           context: src
           tags: ${{ steps.set-outputs.outputs.test-tag }}
