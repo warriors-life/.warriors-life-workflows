@@ -281,6 +281,14 @@ jobs:
       - name: Push Docker image to Docker Hub
         if: "!github.event.repository.private"
         run: docker push -a ${{ inputs.image-name }} # TODO: change this hack when https://github.com/docker/build-push-action/issues/17 will be truly fixed
+      - name: Update Docker Hub description
+        if: "!github.event.repository.private && github.ref_type == 'tag' && github.ref_name == 'release'"
+        uses: peter-evans/dockerhub-description@dc67fad7001ef9e8e3c124cb7a64e16d0a63d864
+        with:
+          username: ${{ steps.split.outputs.username || secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+          short-description: ${{ github.event.repository.description }}
+          enable-url-completion: true
 
   release:
     if: github.ref_type == 'tag'
