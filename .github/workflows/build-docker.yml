@@ -12,7 +12,9 @@ on:
     secrets:
       SNYK_TOKEN:
         required: false
-      DOCKERHUB_TOKEN:
+      DOCKERHUB_USERNAME:
+        required: false
+      DOCKERHUB_PASSWORD:
         required: false
     outputs:
       test-tag:
@@ -251,7 +253,9 @@ jobs:
       - name: Split image name
         id: split
         run: |
-          echo "username=${name%/*}" >> $GITHUB_OUTPUT
+          username=${name%/*}
+          test $username == $name && username=''
+          echo "username=$username" >> $GITHUB_OUTPUT
         env:
           name: ${{ inputs.image-name }}
       - name: Login to GHCR
@@ -264,8 +268,8 @@ jobs:
         if: "!github.event.repository.private"
         uses: docker/login-action@465a07811f14bebb1938fbed4728c6a1ff8901fc
         with:
-          username: ${{ steps.split.outputs.username }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          username: ${{ steps.split.outputs.username || secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
       - name: Tag Docker image properly
         run: |
           while IFS= read -r tag; do
