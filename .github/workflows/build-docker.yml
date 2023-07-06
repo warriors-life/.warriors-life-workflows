@@ -126,10 +126,8 @@ jobs:
           tags: ${{ steps.set-outputs.outputs.test-tag }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          outputs: type=oci,dest=/tmp/image.tar
+          outputs: type=docker,dest=/tmp/image.tar
           labels: ${{ needs.metadata.outputs.labels }}
-          provenance: true
-          sbom: true
       - name: Upload Docker image
         uses: actions/upload-artifact@0b7f8abb1508181956e8e162db84b466c27e18ce
         with:
