@@ -40,7 +40,7 @@ jobs:
       contents: read
     steps:
       - name: Harden runner
-        uses: step-security/harden-runner@128a63446a954579617e875aaab7d2978154e969
+        uses: step-security/harden-runner@55d479fb1c5bcad5a4f9099a5d9f37c8857b2845
         with:
           disable-sudo: true
           egress-policy: block
@@ -64,7 +64,7 @@ jobs:
       labels: ${{ steps.meta.outputs.labels }}
     steps:
       - name: Harden runner
-        uses: step-security/harden-runner@128a63446a954579617e875aaab7d2978154e969
+        uses: step-security/harden-runner@55d479fb1c5bcad5a4f9099a5d9f37c8857b2845
         with:
           disable-sudo: true
           egress-policy: block
@@ -95,7 +95,7 @@ jobs:
       test-tag: ${{ steps.set-outputs.outputs.test-tag }}
     steps:
       - name: Harden runner
-        uses: step-security/harden-runner@128a63446a954579617e875aaab7d2978154e969
+        uses: step-security/harden-runner@55d479fb1c5bcad5a4f9099a5d9f37c8857b2845
         with:
           disable-sudo: true
           egress-policy: block
@@ -142,7 +142,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Harden runner
-        uses: step-security/harden-runner@128a63446a954579617e875aaab7d2978154e969
+        uses: step-security/harden-runner@55d479fb1c5bcad5a4f9099a5d9f37c8857b2845
         with:
           disable-sudo: true
           egress-policy: block
@@ -185,7 +185,7 @@ jobs:
         working-directory: test
     steps:
       - name: Harden runner
-        uses: step-security/harden-runner@128a63446a954579617e875aaab7d2978154e969
+        uses: step-security/harden-runner@55d479fb1c5bcad5a4f9099a5d9f37c8857b2845
         with:
           disable-sudo: true
           egress-policy: block
@@ -231,7 +231,7 @@ jobs:
       packages: write
     steps:
       - name: Harden runner
-        uses: step-security/harden-runner@128a63446a954579617e875aaab7d2978154e969
+        uses: step-security/harden-runner@55d479fb1c5bcad5a4f9099a5d9f37c8857b2845
         with:
           disable-sudo: true
           egress-policy: block
@@ -283,7 +283,7 @@ jobs:
       contents: write
     steps:
       - name: Harden runner
-        uses: step-security/harden-runner@128a63446a954579617e875aaab7d2978154e969
+        uses: step-security/harden-runner@55d479fb1c5bcad5a4f9099a5d9f37c8857b2845
         with:
           disable-sudo: true
           egress-policy: block
