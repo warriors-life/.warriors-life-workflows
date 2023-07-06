@@ -43,7 +43,7 @@ jobs:
             bestpractices.coreinfrastructure.org:443
             oss-fuzz-build-logs.storage.googleapis.com:443
       - name: Checkout
-        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
+        uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9
         with:
           persist-credentials: false
       - name: Run analysis
@@ -77,7 +77,7 @@ jobs:
             api.github.com:443
             github.com:443
       - name: Checkout
-        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
+        uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9
         with:
           persist-credentials: false
       - name: Dependency review
@@ -99,7 +99,7 @@ jobs:
             api.github.com:443
             github.com:443
       - name: Checkout
-        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
+        uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9
         with:
           persist-credentials: false
       - name: Init
@@ -142,7 +142,7 @@ jobs:
             github.com:443
             api.snyk.io:443
       - name: Checkout
-        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
+        uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9
         with:
           persist-credentials: false
       - name: Run Snyk
@@ -185,7 +185,7 @@ jobs:
             objects.githubusercontent.com:443
             registry.npmjs.org:443
       - name: Checkout
-        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
+        uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9
         with:
           persist-credentials: false
       - name: Setup Node
