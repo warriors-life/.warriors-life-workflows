@@ -235,8 +235,8 @@ jobs:
     name: Push Docker image to the registry
     runs-on: ubuntu-latest
     permissions:
-      packages: write
       contents: read
+      packages: write
     steps:
       - name: Harden runner
         uses: step-security/harden-runner@55d479fb1c5bcad5a4f9099a5d9f37c8857b2845
