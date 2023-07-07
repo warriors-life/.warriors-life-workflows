@@ -290,6 +290,7 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           push: true
+          provenance: false
       - name: Update Docker Hub description
         if: "!github.event.repository.private && github.ref_type == 'tag' && github.ref_name == 'release'"
         uses: peter-evans/dockerhub-description@dc67fad7001ef9e8e3c124cb7a64e16d0a63d864
