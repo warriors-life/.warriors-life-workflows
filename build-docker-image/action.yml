@@ -35,16 +35,16 @@ runs:
       with:
         version: https://github.com/docker/buildx.git#b4df08551fb12eb2ed17d3d9c3977ca0a903415a
         driver-opts: image=moby/buildkit:v0.11.6@sha256:ca0d14553e35b39610d323f02ff139a472b76d7bd6b19104fbf7691ea1916217
-    - name: Set up QEMU
-      if: inputs.multi-platforms == 'true'
-      uses: docker/setup-qemu-action@2b82ce82d56a2a04d2637cd93a637ae1b359c0a7
-      with:
-        image: tonistiigi/binfmt:qemu-v6.2.0@sha256:85683def11494bc0055d98dd1081e73cb5e70bbc1ae532be3d12cf054e2b11f1
-        platforms: arm64
+    # - name: Set up QEMU
+      # if: inputs.multi-platforms == 'true'
+      # uses: docker/setup-qemu-action@2b82ce82d56a2a04d2637cd93a637ae1b359c0a7
+      # with:
+        # image: tonistiigi/binfmt:qemu-v6.2.0@sha256:85683def11494bc0055d98dd1081e73cb5e70bbc1ae532be3d12cf054e2b11f1
+        # platforms: arm64
     - name: Build Docker image
       uses: docker/build-push-action@2eb1c1961a95fc15694676618e422e8ba1d63825
       with:
-        platforms: ${{ inputs.multi-platforms == 'true' && 'linux/amd64,linux/arm64' || 'linux/amd64' }}
+        # platforms: ${{ inputs.multi-platforms == 'true' && 'linux/amd64,linux/arm64' || 'linux/amd64' }}
         context: src
         tags: ${{ inputs.tags }}
         labels: ${{ inputs.labels }}
