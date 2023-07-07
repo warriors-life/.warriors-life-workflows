@@ -285,11 +285,19 @@ jobs:
         uses: docker/build-push-action@2eb1c1961a95fc15694676618e422e8ba1d63825
         with:
           context: src
-          tags: ${{ needs.metadata.outputs.tags }}
+          tags: ${{ needs.build.outputs.test-tag }}
           labels: ${{ needs.metadata.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          push: true
+          load: true
+      - name: Tag Docker image properly
+        run: |
+          while IFS= read -r tag; do
+            echo "Tagging image $tag"
+            docker tag ${{ needs.build.outputs.test-tag }} "$tag"
+          done <<< "${{ needs.metadata.outputs.tags }}"
+      - name: Push Docker image to GHCR
+        run: docker push -a ghcr.io/${{ inputs.image-name }}
       - name: Update Docker Hub description
         if: "!github.event.repository.private && github.ref_type == 'tag' && github.ref_name == 'release'"
         uses: peter-evans/dockerhub-description@dc67fad7001ef9e8e3c124cb7a64e16d0a63d864
