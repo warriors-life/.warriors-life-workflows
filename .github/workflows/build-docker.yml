@@ -115,7 +115,7 @@ jobs:
         run: |
           echo "test-tag=${{ inputs.image-name }}:test" >> $GITHUB_OUTPUT
       - name: Build
-        uses: ./build-docker-image
+        uses: warriors-life/.warriors-life-workflows/build-docker-image@dev # TODO: Why GitHub Actions don't support calling local actions from reusable workflows?
         with:
           tags: ${{ steps.set-outputs.outputs.test-tag }}
           labels: ${{ needs.metadata.outputs.labels }}
@@ -258,7 +258,7 @@ jobs:
           username: ${{ steps.split.outputs.username || secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
       - name: Build and push Docker image
-        uses: ./build-docker-image
+        uses: warriors-life/.warriors-life-workflows/build-docker-image@dev
         with:
           multi-platforms: true
           tags: ${{ needs.metadata.outputs.tags }}
@@ -300,7 +300,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Rebuild Docker image
-        uses: ./build-docker-image
+        uses: warriors-life/.warriors-life-workflows/build-docker-image@dev
         with:
           checkout: false
           multi-platforms: true
