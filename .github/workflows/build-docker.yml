@@ -289,9 +289,7 @@ jobs:
           labels: ${{ needs.metadata.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          load: true
-      - name: Push Docker image to GHCR
-        run: docker push -a ghcr.io/${{ inputs.image-name }}
+          push: true
       - name: Update Docker Hub description
         if: "!github.event.repository.private && github.ref_type == 'tag' && github.ref_name == 'release'"
         uses: peter-evans/dockerhub-description@dc67fad7001ef9e8e3c124cb7a64e16d0a63d864
