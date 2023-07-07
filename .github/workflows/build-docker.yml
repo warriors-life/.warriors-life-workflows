@@ -289,8 +289,6 @@ jobs:
           labels: ${{ needs.metadata.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          provenance: true
-          sbom: true
           push: true
       - name: Update Docker Hub description
         if: "!github.event.repository.private && github.ref_type == 'tag' && github.ref_name == 'release'"
