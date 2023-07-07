@@ -22,19 +22,6 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Harden runner
-      uses: step-security/harden-runner@55d479fb1c5bcad5a4f9099a5d9f37c8857b2845
-      with:
-        disable-sudo: true
-        egress-policy: block
-        allowed-endpoints: >
-          github.com:443
-          ghcr.io:443
-          registry-1.docker.io:443
-          auth.docker.io:443
-          docker.io:443
-          production.cloudflare.docker.com:443
-          dl-cdn.alpinelinux.org:443
     - name: Checkout
       if: inputs.checkout
       uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9
