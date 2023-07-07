@@ -1,0 +1,65 @@
+name: 'Build Docker image'
+inputs:
+  checkout:
+    description: 'Whether to checkout code'
+    required: false
+    default: true
+  multi-platforms:
+    description: 'Whether to build for multiple platforms'
+    required: false
+    default: false
+  tags:
+    description: 'Tags'
+    required: true
+  labels:
+    description: 'Labels'
+    required: true
+  push:
+    description: 'Push or export locally'
+    required: false
+    default: false
+
+runs:
+  using: "composite"
+  steps:
+    - name: Harden runner
+      uses: step-security/harden-runner@55d479fb1c5bcad5a4f9099a5d9f37c8857b2845
+      with:
+        disable-sudo: true
+        egress-policy: block
+        allowed-endpoints: >
+          github.com:443
+          ghcr.io:443
+          registry-1.docker.io:443
+          auth.docker.io:443
+          docker.io:443
+          production.cloudflare.docker.com:443
+          dl-cdn.alpinelinux.org:443
+    - name: Checkout
+      if: inputs.checkout
+      uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9
+      with:
+        sparse-checkout: src
+        persist-credentials: false
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@16c0bc4a6e6ada2cfd8afd41d22d95379cf7c32a
+      with:
+        version: https://github.com/docker/buildx.git#b4df08551fb12eb2ed17d3d9c3977ca0a903415a
+        driver-opts: image=moby/buildkit:v0.11.6@sha256:ca0d14553e35b39610d323f02ff139a472b76d7bd6b19104fbf7691ea1916217
+    - name: Set up QEMU
+      if: inputs.multi-platforms
+      uses: docker/setup-qemu-action@2b82ce82d56a2a04d2637cd93a637ae1b359c0a7
+      with:
+        image: tonistiigi/binfmt:qemu-v6.2.0@sha256:01882a96113f38b1928a5797c52f7eaa7e39acf6cc15ec541c6e8428f3c2347d
+        platforms: arm64
+    - name: Build Docker image
+      uses: docker/build-push-action@2eb1c1961a95fc15694676618e422e8ba1d63825
+      with:
+        platforms: ${{ inputs.multi-platforms && 'linux/amd64,linux/arm64' || 'linux/amd64' }}
+        context: src
+        tags: ${{ inputs.tags }}
+        labels: ${{ inputs.labels }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+        provenance: false
+        output: ${{ inputs.push && 'type=registry' || 'type=docker,dest=/tmp/image.tar' }}
