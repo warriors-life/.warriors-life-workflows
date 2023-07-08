@@ -1,0 +1,26 @@
+name: 'Setup Node'
+inputs:
+  working-directory:
+    description: 'Working directory for installing dependencies'
+    required: false
+    default: 'src'
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup Node
+      uses: actions/setup-node@e33196f7422957bea03ed53f6fbb155025ffc7b8
+      with:
+        node-version: 18.16.0
+        cache: 'npm'
+        cache-dependency-path: test/package-lock.json
+        registry-url: 'https://npm.pkg.github.com/'
+    # https://github.com/actions/setup-node/blob/main/docs/advanced-usage.md#use-private-packages
+    - name: Install Node dependencies
+      run: npm ci --ignore-scripts
+      working-directory: ${{ inputs.working-directory }}
+      env:
+        NODE_AUTH_TOKEN: ${{ github.token }}
+    - name: Run post-install scripts
+      run: npm rebuild && npm run prepare --if-present
+      working-directory: ${{ inputs.working-directory }}
