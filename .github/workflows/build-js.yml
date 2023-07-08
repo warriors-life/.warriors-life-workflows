@@ -12,9 +12,6 @@ on:
       NPM_TOKEN:
         required: false
 
-env:
-  REGISTRY: ${{ github.event.repository.private && 'https://npm.pkg.github.com/' || 'https://registry.npmjs.org/' }}
-
 permissions: {}
 
 jobs:
@@ -45,11 +42,17 @@ jobs:
           egress-policy: block
           allowed-endpoints: >
             ghcr.io:443
-      - name: Publish package
+      - name: Publish package to GPR
         uses: JS-DevTools/npm-publish@a25b4180b728b0279fca97d4e5bccf391685aead
         with:
-          registry: ${{ env.REGISTRY }}
-          token: ${{ (env.REGISTRY == 'https://npm.pkg.github.com/') && github.token || secrets.NPM_TOKEN }}
+          registry: 'https://npm.pkg.github.com/'
+          token: ${{ github.token }}
+          package: src
+          provenance: true
+      - name: Publish package to NPM
+        uses: JS-DevTools/npm-publish@a25b4180b728b0279fca97d4e5bccf391685aead
+        with:
+          token: ${{ secrets.NPM_TOKEN }}
           package: src
           provenance: true
 
