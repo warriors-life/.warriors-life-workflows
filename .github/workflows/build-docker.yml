@@ -198,6 +198,8 @@ jobs:
         uses: actions/setup-node@e33196f7422957bea03ed53f6fbb155025ffc7b8
         with:
           node-version: 18.16.0
+          cache: 'npm'
+          cache-dependency-path: test/package-lock.json
       - name: Install Node dependencies
         run: npm ci
       - name: Download Docker image
