@@ -18,9 +18,11 @@ runs:
     # https://github.com/actions/setup-node/blob/main/docs/advanced-usage.md#use-private-packages
     - name: Install Node dependencies
       run: npm ci --ignore-scripts
-      working-directory: ${{ inputs.working-directory }}
       env:
         NODE_AUTH_TOKEN: ${{ github.token }}
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
     - name: Run post-install scripts
       run: npm rebuild && npm run prepare --if-present
+      shell: bash
       working-directory: ${{ inputs.working-directory }}
