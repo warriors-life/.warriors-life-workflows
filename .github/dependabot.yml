@@ -4,3 +4,14 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
+
+    # TODO: https://github.com/dependabot/dependabot-core/issues/6704
+  - package-ecosystem: "github-actions"
+    directory: "/build-docker-image"
+    schedule:
+      interval: "daily"
+
+  - package-ecosystem: "github-actions"
+    directory: "/test-docker-image"
+    schedule:
+      interval: "daily"
