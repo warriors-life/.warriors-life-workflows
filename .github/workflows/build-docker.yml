@@ -306,7 +306,7 @@ jobs:
           labels: ${{ needs.metadata.outputs.labels }}
       - name: Extract release notes
         id: extract-release-notes
-        uses: ffurrer2/extract-release-notes@f2dd00dec4102dbc6d7bdf804dfd85546dfa1f0b
+        uses: ffurrer2/extract-release-notes@4db7ff8e9cc8a442ab103fd3ddfaebd0f8f36e4c
       - name: Import GPG key
         uses: crazy-max/ghaction-import-gpg@72b6676b71ab476b77e676928516f6982eef7a41
         with:
