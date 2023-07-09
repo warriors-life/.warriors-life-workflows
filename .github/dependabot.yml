@@ -15,3 +15,8 @@ updates:
     directory: "/test-docker-image"
     schedule:
       interval: "daily"
+
+  - package-ecosystem: "github-actions"
+    directory: "/setup-node"
+    schedule:
+      interval: "daily"
