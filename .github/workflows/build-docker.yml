@@ -273,7 +273,7 @@ jobs:
           labels: ${{ needs.metadata.outputs.labels }}
           push: true
       - name: Update Docker Hub description
-        if: "!github.event.repository.private && github.ref_type == 'tag' && github.ref_name == 'release'"
+        if: "!github.event.repository.private && (github.ref_type == 'tag')"
         uses: peter-evans/dockerhub-description@dc67fad7001ef9e8e3c124cb7a64e16d0a63d864
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME || steps.split.outputs.username }}
