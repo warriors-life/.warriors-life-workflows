@@ -139,6 +139,7 @@ jobs:
           disable-sudo: true
           egress-policy: block
           allowed-endpoints: >
+            api.github.com:443
             api.snyk.io:443
       - name: Download Docker image
         uses: actions/download-artifact@9bc31d5ccc31df68ecc42ccf4149144866c47d8a

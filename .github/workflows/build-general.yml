@@ -82,6 +82,9 @@ jobs:
           persist-credentials: false
       - name: Dependency review
         uses: actions/dependency-review-action@1360a344ccb0ab6e9475edef90ad2f46bf8003b1
+        with:
+          base_ref: ${{ github.base_ref || github.event.before }}
+          head_ref: ${{ github.head_ref || github.event.after }}
 
   codeql:
     if: "!github.event.repository.private"
@@ -98,6 +101,7 @@ jobs:
           allowed-endpoints: >
             api.github.com:443
             github.com:443
+            objects.githubusercontent.com:443
       - name: Checkout
         uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9
         with:
@@ -139,6 +143,7 @@ jobs:
           disable-sudo: true
           egress-policy: block
           allowed-endpoints: >
+            api.github.com:443
             github.com:443
             api.snyk.io:443
       - name: Checkout
