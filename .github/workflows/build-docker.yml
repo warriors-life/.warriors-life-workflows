@@ -255,7 +255,7 @@ jobs:
         if: "!github.event.repository.private"
         uses: docker/login-action@465a07811f14bebb1938fbed4728c6a1ff8901fc
         with:
-          username: ${{ steps.split.outputs.username || secrets.DOCKERHUB_USERNAME }}
+          username: ${{ secrets.DOCKERHUB_USERNAME || steps.split.outputs.username }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
       - name: Build and push Docker image
         uses: warriors-life/.warriors-life-workflows/build-docker-image@dev
