@@ -154,18 +154,19 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
           image: ${{ needs.build.outputs.test-tag }}
+          args: --sarif-file-output=snyk-docker.sarif
         continue-on-error: true
       - name: Upload output
         uses: actions/upload-artifact@0b7f8abb1508181956e8e162db84b466c27e18ce
         with:
           name: Snyk (Docker)
-          path: snyk.sarif
+          path: snyk-docker.sarif
       - name: Upload SARIF to dashboard
         if: "!github.event.repository.private"
         uses: github/codeql-action/upload-sarif@f31a31c052207cc13b328d6295c5b728bb49568c
         with:
-          sarif_file: snyk.sarif
           category: Snyk (Docker)
+          sarif_file: snyk-docker.sarif
 
   test-unit:
     needs: build
