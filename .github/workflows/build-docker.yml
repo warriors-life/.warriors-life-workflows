@@ -66,6 +66,7 @@ jobs:
     outputs:
       tags: ${{ steps.meta.outputs.tags }}
       labels: ${{ steps.meta.outputs.labels }}
+      sanitized-name: ${{ steps.sanitize.outputs.name }}
     steps:
       - name: Harden runner
         uses: step-security/harden-runner@55d479fb1c5bcad5a4f9099a5d9f37c8857b2845
@@ -279,6 +280,7 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME || steps.split.outputs.username }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
+          repository: ${{ needs.metadata.outputs.sanitized-name }}
           short-description: ${{ github.event.repository.description }}
           enable-url-completion: true
 
