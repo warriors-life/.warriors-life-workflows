@@ -35,6 +35,5 @@ jobs:
       - name: Update
         run: |
           git checkout release
-          git branch -m release dummy
-          git branch -m dev release
-          git push -f origin release
+          git merge dev
+          git push
