@@ -78,7 +78,7 @@ jobs:
         id: sanitize
         run: |
           username=${name%/*}
-          (test $username == $name && echo "name=$(echo $username | tr -d '-')/${name#*/}" || echo "name=$name") >> $GITHUB_OUTPUT
+          (test $username == $name && echo "name=$name" || echo "name=$(echo $username | tr -d '-')/${name#*/}") >> $GITHUB_OUTPUT
         env:
           name: ${{ inputs.image-name }}
       - name: Extract metadata (tags, labels) for Docker
