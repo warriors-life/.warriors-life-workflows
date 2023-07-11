@@ -275,7 +275,7 @@ jobs:
           labels: ${{ needs.metadata.outputs.labels }}
           push: true
       - name: Update Docker Hub description
-        if: false # "!github.event.repository.private && (github.ref_type == 'tag')" TODO: https://github.com/peter-evans/dockerhub-description/issues/10#issuecomment-1629405285
+        if: "!github.event.repository.private && (github.ref_type == 'tag')"
         uses: peter-evans/dockerhub-description@dc67fad7001ef9e8e3c124cb7a64e16d0a63d864
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME || steps.split.outputs.username }}
