@@ -31,7 +31,7 @@ runs:
         sparse-checkout: src
         persist-credentials: false
     - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@2a1a44ac4aa01993040736bd95bb470da1a38365
+      uses: docker/setup-buildx-action@4c0219f9ac95b02789c1075625400b2acbff50b1
       with:
         version: https://github.com/docker/buildx.git#b4df08551fb12eb2ed17d3d9c3977ca0a903415a
         driver-opts: image=moby/buildkit:v0.11.6@sha256:ca0d14553e35b39610d323f02ff139a472b76d7bd6b19104fbf7691ea1916217
