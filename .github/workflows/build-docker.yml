@@ -113,6 +113,7 @@ jobs:
           egress-policy: block
           allowed-endpoints: >
             github.com:443
+            actions.githubusercontent.com:443
             registry-1.docker.io:443
             auth.docker.io:443
             docker.io:443
@@ -148,6 +149,7 @@ jobs:
           egress-policy: block
           allowed-endpoints: >
             api.github.com:443
+            actions.githubusercontent.com:443
             api.snyk.io:443
       - name: Download Docker image
         uses: actions/download-artifact@9bc31d5ccc31df68ecc42ccf4149144866c47d8a
@@ -194,6 +196,7 @@ jobs:
           allowed-endpoints: >
             api.github.com:443
             github.com:443
+            actions.githubusercontent.com:443
             objects.githubusercontent.com:443
             registry.npmjs.org:443
             registry-1.docker.io:443
