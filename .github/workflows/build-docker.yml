@@ -49,7 +49,7 @@ jobs:
           allowed-endpoints: >
             github.com:443
       - name: Checkout
-        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744
+        uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac
         with:
           sparse-checkout: src/Dockerfile
           sparse-checkout-cone-mode: false
@@ -200,7 +200,7 @@ jobs:
             auth.docker.io:443
             production.cloudflare.docker.com:443
       - name: Checkout
-        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744
+        uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac
         with:
           sparse-checkout: test
           persist-credentials: false
@@ -307,7 +307,7 @@ jobs:
             production.cloudflare.docker.com:443
             dl-cdn.alpinelinux.org:443
       - name: Checkout
-        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744
+        uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac
         with:
           persist-credentials: false
       - name: Rebuild Docker image
