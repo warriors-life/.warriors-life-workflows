@@ -54,6 +54,7 @@ jobs:
           sparse-checkout: src/Dockerfile
           sparse-checkout-cone-mode: false
           persist-credentials: false
+          show-progress: false
       - name: Lint
         uses: hadolint/hadolint-action@54c9adbab1582c2ef04b2016b760714a4bfde3cf
         with:
@@ -204,6 +205,7 @@ jobs:
         with:
           sparse-checkout: test
           persist-credentials: false
+          show-progress: false
       - name: Setup Node
         uses: warriors-life/.warriors-life-workflows/setup-node@dev
         with:
@@ -310,6 +312,7 @@ jobs:
         uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac
         with:
           persist-credentials: false
+          show-progress: false
       - name: Rebuild Docker image
         uses: warriors-life/.warriors-life-workflows/build-docker-image@dev
         with:
