@@ -54,7 +54,7 @@ jobs:
           results_file: scorecard.sarif
           results_format: sarif
       - name: Upload output
-        uses: actions/upload-artifact@0b7f8abb1508181956e8e162db84b466c27e18ce
+        uses: actions/upload-artifact@a8a3f3ad30e3422c9c7b888a15615d19a852ae32
         with:
           name: Scorecard
           path: scorecard.sarif
@@ -164,7 +164,7 @@ jobs:
           args: --sarif-file-output=snyk-js.sarif --all-projects
         continue-on-error: true
       - name: Upload output
-        uses: actions/upload-artifact@0b7f8abb1508181956e8e162db84b466c27e18ce
+        uses: actions/upload-artifact@a8a3f3ad30e3422c9c7b888a15615d19a852ae32
         with:
           name: Snyk (JS)
           path: snyk-js.sarif
