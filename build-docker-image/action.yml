@@ -43,7 +43,7 @@ runs:
         # image: tonistiigi/binfmt:qemu-v6.2.0@sha256:85683def11494bc0055d98dd1081e73cb5e70bbc1ae532be3d12cf054e2b11f1
         # platforms: arm64
     - name: Build Docker image
-      uses: docker/build-push-action@2eb1c1961a95fc15694676618e422e8ba1d63825
+      uses: docker/build-push-action@0a97817b6ade9f46837855d676c4cca3a2471fc9
       with:
         # platforms: ${{ inputs.multi-platforms == 'true' && 'linux/amd64,linux/arm64' || 'linux/amd64' }}
         context: src
