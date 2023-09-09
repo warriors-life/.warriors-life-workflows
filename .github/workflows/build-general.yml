@@ -86,8 +86,8 @@ jobs:
       - name: Dependency review
         uses: actions/dependency-review-action@f6fff72a3217f580d5afd49a46826795305b63c7
         with:
-          base-ref: ${{ github.base_ref || github.event.before }}
-          head-ref: ${{ github.head_ref || github.event.after }}
+          base-ref: ${{ github.base_ref || github.event.before || 'dev' }}
+          head-ref: ${{ github.head_ref || github.event.after || 'dev' }}
 
   codeql:
     if: "!github.event.repository.private"
