@@ -115,9 +115,9 @@ jobs:
         uses: github/codeql-action/init@f31a31c052207cc13b328d6295c5b728bb49568c
         with:
           languages: javascript
-          packs:
-            - codeql/javascript-queries@0.7.3
-            - codeql/javascript-experimental-atm-queries@0.4.10
+          packs: >
+            codeql/javascript-queries@0.7.3,
+            codeql/javascript-experimental-atm-queries@0.4.10
           queries: security-and-quality, security-experimental
       - name: Scan
         uses: github/codeql-action/analyze@f31a31c052207cc13b328d6295c5b728bb49568c
