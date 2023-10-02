@@ -13,7 +13,9 @@ runs:
       with:
         node-version: 20.8.0
         cache: 'npm'
-        cache-dependency-path: test/package-lock.json
+        cache-dependency-path: |
+          src/package-lock.json
+          test/package-lock.json
         registry-url: 'https://npm.pkg.github.com/'
     # https://github.com/actions/setup-node/blob/main/docs/advanced-usage.md#use-private-packages
     - name: Install Node dependencies
