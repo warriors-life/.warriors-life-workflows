@@ -52,14 +52,6 @@ jobs:
           show-progress: false
       - name: Setup Node # TODO: do we need this? maybe this is required when we're publishing package that has GPR dependencies?
         uses: warriors-life/.warriors-life-workflows/setup-node@dev
-      - name: Publish package to GPR
-        uses: JS-DevTools/npm-publish@fe72237be0920f7a0cafd6a966c9b929c9466e9b
-        with:
-          registry: 'https://npm.pkg.github.com/'
-          token: ${{ github.token }}
-          package: src
-          provenance: ${{ !github.event.repository.private }}
-          access: ${{ github.event.repository.private && 'restricted' || 'public' }}
       - name: Publish package to NPM
         if: "!github.event.repository.private"
         uses: JS-DevTools/npm-publish@fe72237be0920f7a0cafd6a966c9b929c9466e9b
@@ -68,6 +60,20 @@ jobs:
           package: src
           provenance: true
           access: public
+      - name: Modify package name
+        uses: maxgfr/github-change-json@c91f4973a570c0ed6b0867e49372f5e9f1063ca8
+        with:
+          key: name
+          value: ${{ format('@{0}', github.repository) }}
+          path: src/package.json
+      - name: Publish package to GPR
+        uses: JS-DevTools/npm-publish@fe72237be0920f7a0cafd6a966c9b929c9466e9b
+        with:
+          registry: 'https://npm.pkg.github.com/'
+          token: ${{ github.token }}
+          package: src
+          provenance: ${{ !github.event.repository.private }}
+          access: ${{ github.event.repository.private && 'restricted' || 'public' }}
 
   release:
     if: github.ref_type == 'tag'
