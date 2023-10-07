@@ -59,13 +59,15 @@ jobs:
           token: ${{ github.token }}
           package: src
           provenance: ${{ !github.event.repository.private }}
+          access: ${{ github.event.repository.private ? 'restricted' : 'public' }}
       - name: Publish package to NPM
         if: "!github.event.repository.private"
         uses: JS-DevTools/npm-publish@fe72237be0920f7a0cafd6a966c9b929c9466e9b
         with:
           token: ${{ secrets.NPM_TOKEN }}
           package: src
-          provenance: ${{ !github.event.repository.private }}
+          provenance: true
+          access: public
 
   release:
     if: github.ref_type == 'tag'
