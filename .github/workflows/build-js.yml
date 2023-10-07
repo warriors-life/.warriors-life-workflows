@@ -66,6 +66,14 @@ jobs:
           key: name
           value: ${{ format('@{0}', github.repository) }}
           path: src/package.json
+      - name: Publish package to NPM (scoped)
+        if: "!github.event.repository.private"
+        uses: JS-DevTools/npm-publish@fe72237be0920f7a0cafd6a966c9b929c9466e9b
+        with:
+          token: ${{ secrets.NPM_TOKEN }}
+          package: src
+          provenance: true
+          access: public
       - name: Publish package to GPR
         uses: JS-DevTools/npm-publish@fe72237be0920f7a0cafd6a966c9b929c9466e9b
         with:
