@@ -64,7 +64,8 @@ jobs:
           token: ${{ secrets.NPM_TOKEN }}
           package: src
           provenance: true
-        #  access: public
+          access: public
+          strategy: upgrade
       - name: Modify package name
         uses: maxgfr/github-change-json@c91f4973a570c0ed6b0867e49372f5e9f1063ca8
         with:
