@@ -41,9 +41,12 @@ jobs:
         uses: step-security/harden-runner@8ca2b8b2ece13480cda6dacd3511b49857a23c09
         with:
           disable-sudo: true
-          egress-policy: audit
+          egress-policy: block
           allowed-endpoints: >
-            ghcr.io:443
+            sigstore.dev:443
+            npm.pkg.github.com:443
+            github.com:443
+            registry.npmjs.org:443
       - name: Checkout
         uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608
         with:
@@ -97,11 +100,12 @@ jobs:
         uses: step-security/harden-runner@8ca2b8b2ece13480cda6dacd3511b49857a23c09
         with:
           disable-sudo: true
-          egress-policy: audit
+          egress-policy: block
           allowed-endpoints: >
             api.github.com:443
             uploads.github.com:443
             github.com:443
+            registry.npmjs.org:443
       - name: Checkout
         uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608
         with:
