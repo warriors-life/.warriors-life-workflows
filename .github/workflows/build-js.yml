@@ -65,22 +65,20 @@ jobs:
           package: src
           provenance: true
           access: public
-          strategy: upgrade
       - name: Modify package name
         uses: maxgfr/github-change-json@c91f4973a570c0ed6b0867e49372f5e9f1063ca8
         with:
           key: name
           value: ${{ format('@{0}', github.repository) }}
           path: src/package.json
-      # TODO: why this doesn't work?
-      # - name: Publish package to NPM (scoped)
-      #  if: "!github.event.repository.private"
-      #  uses: JS-DevTools/npm-publish@fe72237be0920f7a0cafd6a966c9b929c9466e9b
-      #  with:
-      #    token: ${{ secrets.NPM_TOKEN }}
-      #    package: src
-      #    provenance: true
-      #    access: public
+      - name: Publish package to NPM (scoped)
+        if: "!github.event.repository.private"
+        uses: JS-DevTools/npm-publish@fe72237be0920f7a0cafd6a966c9b929c9466e9b
+        with:
+          token: ${{ secrets.NPM_TOKEN }}
+          package: src
+          provenance: true
+          access: public
       - name: Publish package to GPR
         uses: JS-DevTools/npm-publish@fe72237be0920f7a0cafd6a966c9b929c9466e9b
         with:
