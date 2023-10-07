@@ -58,14 +58,14 @@ jobs:
           registry: 'https://npm.pkg.github.com/'
           token: ${{ github.token }}
           package: src
-          provenance: true
+          provenance: ${{ !github.event.repository.private }}
       - name: Publish package to NPM
         if: "!github.event.repository.private"
         uses: JS-DevTools/npm-publish@fe72237be0920f7a0cafd6a966c9b929c9466e9b
         with:
           token: ${{ secrets.NPM_TOKEN }}
           package: src
-          provenance: true
+          provenance: ${{ !github.event.repository.private }}
 
   release:
     if: github.ref_type == 'tag'
