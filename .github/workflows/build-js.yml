@@ -79,7 +79,7 @@ jobs:
         uses: ArtiomTr/jest-coverage-report-action@a0b93b002006a91fb6b4a779acbd89ab9d967da8
         with:
           coverage-file: ../coverage-final.json
-          base-coverage-file: tests/coverage/coverage-final.json
+          base-coverage-file: test/coverage/coverage-final.json
           output: ${{ github.event_name == 'pull_request' && 'comment' || 'report-markdown' }}
       - name: Write coverage report
         if: "github.event_name != 'pull_request'"
