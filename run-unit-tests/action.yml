@@ -22,7 +22,7 @@ runs:
       shell: bash
       working-directory: test
     - name: Run unit tests
-      run: ${{ inputs.coverage && format('npm test --coverage --json --outputFile="{0}"', inputs.coverage) || 'npm test' }}
+      run: ${{ inputs.coverage && format('npm test -- --coverage --json --outputFile="{0}"', inputs.coverage) || 'npm test' }}
       env:
         NODE_ENV: ${{ (startsWith(github.ref, 'ref/heads/release') || startsWith(github.base_ref, 'ref/heads/release')) && 'production' || 'development' }}
       shell: bash
