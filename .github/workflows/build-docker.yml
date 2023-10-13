@@ -183,9 +183,6 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-    defaults:
-      run:
-        working-directory: test
     steps:
       - name: Harden runner
         uses: step-security/harden-runner@1b05615854632b887b69ae1be8cbefe72d3ae423
@@ -206,10 +203,8 @@ jobs:
           sparse-checkout: test
           persist-credentials: false
           show-progress: false
-      - name: Setup Node
-        uses: warriors-life/.warriors-life-workflows/setup-node@dev
-        with:
-          working-directory: test
+      - name: Set env variable
+        run: export TEST_IMAGE=${{ needs.build.outputs.test-tag }} >> $GITHUB_ENV
       - name: Download Docker image
         uses: actions/download-artifact@9bc31d5ccc31df68ecc42ccf4149144866c47d8a
         with:
@@ -217,13 +212,10 @@ jobs:
           path: /tmp
       - name: Load image
         run: docker load --input /tmp/image.tar
-      - name: Run pre-tests code
-        run: eval "$CODE"
-        env:
-          CODE: ${{ inputs.node-code-pre-test }}
-          TEST_IMAGE: ${{ needs.build.outputs.test-tag }}
       - name: Run unit tests
-        run: npm test
+        uses: warriors-life/.warriors-life-workflows/run-unit-tests@dev
+        with:
+          node-code-pre-test: ${{ inputs.node-code-pre-test }}
 
   push:
     if: github.event_name != 'pull_request'

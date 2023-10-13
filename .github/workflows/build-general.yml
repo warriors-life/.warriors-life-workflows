@@ -186,9 +186,6 @@ jobs:
     name: Run unit tests
     permissions:
       contents: read
-    defaults:
-      run:
-        working-directory: test
     runs-on: ubuntu-latest
     steps:
       - name: Harden runner
