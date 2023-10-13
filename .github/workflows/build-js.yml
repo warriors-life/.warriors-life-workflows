@@ -32,10 +32,8 @@ jobs:
     needs: call-workflow
     name: Run unit tests
     permissions:
+      pull-requests: write
       contents: read
-    defaults:
-      run:
-        working-directory: test
     runs-on: ubuntu-latest
     steps:
       - name: Harden runner
@@ -64,7 +62,7 @@ jobs:
           name: Coverage
           path: test/coverage/coverage.json
       - name: Move coverage file
-        run: mv coverage/coverage.json ../..
+        run: mv test/coverage/coverage.json ../..
       - name: Checkout base ref
         uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608
         with:
@@ -85,7 +83,10 @@ jobs:
           output: ${{ github.event_name == 'pull_request' && 'comment' || 'report-markdown' }}
       - name: Write coverage report
         if: "github.event_name != 'pull_request'"
-        run: echo ${{ steps.coverage-report.outputs.report }} > coverage/coverage-report.md
+        run: |
+          cat <<"EOF"
+          ${{ steps.coverage-report.outputs.report }}
+          EOF > test/coverage/coverage-report.md
       - name: Upload coverage report
         if: "github.event_name != 'pull_request'"
         uses: actions/upload-artifact@a8a3f3ad30e3422c9c7b888a15615d19a852ae32
