@@ -86,13 +86,13 @@ jobs:
         run: |
           cat <<"EOF"
           ${{ steps.coverage-report.outputs.report }}
-          EOF > test/coverage/coverage-report.md
+          EOF > /tmp/coverage-report.md
       - name: Upload coverage report
         if: "github.event_name != 'pull_request'"
         uses: actions/upload-artifact@a8a3f3ad30e3422c9c7b888a15615d19a852ae32
         with:
           name: Coverage report
-          path: test/coverage/coverage-report.md
+          path: /tmp/coverage-report.md
 
   push:
     if: github.ref_type == 'tag'
