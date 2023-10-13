@@ -65,7 +65,11 @@ jobs:
       - name: Move coverage file
         run: mv coverage/coverage-final.json ../..
       - name: Checkout base ref
-        run: git checkout ${{ github.base_ref || github.event.before || 'dev' }}
+        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608
+        with:
+          persist-credentials: false
+          show-progress: false
+          ref: ${{ github.base_ref || 'dev' }}
       - name: Run units tests on base
         uses: warriors-life/.warriors-life-workflows/run-unit-tests@dev
         with:

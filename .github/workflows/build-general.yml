@@ -86,7 +86,7 @@ jobs:
       - name: Dependency review
         uses: actions/dependency-review-action@6c5ccdad469c9f8a2996bfecaec55a631a347034
         with:
-          base-ref: ${{ github.base_ref || github.event.before || 'dev' }}
+          base-ref: ${{ github.base_ref || 'dev' }}
           head-ref: ${{ github.head_ref || github.event.after || 'dev' }}
 
   codeql:
