@@ -1,0 +1,21 @@
+name: 'Run unit tests'
+inputs:
+  node-code-pre-test:
+    description: 'Code to run pre-test'
+    required: false
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup Node
+      uses: warriors-life/.warriors-life-workflows/setup-node@dev
+      with:
+        working-directory: test
+    - name: Run pre-tests code
+      run: eval "$CODE"
+      env:
+        CODE: ${{ inputs.node-code-pre-test }}
+    - name: Run unit tests
+      run: npm test
+      env:
+        NODE_ENV: ${{ (startsWith(github.ref, 'ref/heads/release') || startsWith(github.base_ref, 'ref/heads/release')) && 'production' || 'development' }}

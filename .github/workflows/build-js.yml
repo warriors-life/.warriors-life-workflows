@@ -25,11 +25,71 @@ jobs:
       issues: read
       pull-requests: read
     with:
-      node-code-pre-test: ${{ inputs.node-code-pre-test }}
+      node-code-pre-test: DISABLE
+
+  test-unit:
+    if: "inputs.node-code-pre-test != 'DISABLE'"
+    needs: call-workflow
+    name: Run unit tests
+    permissions:
+      contents: read
+    defaults:
+      run:
+        working-directory: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Harden runner
+        uses: step-security/harden-runner@1b05615854632b887b69ae1be8cbefe72d3ae423
+        with:
+          disable-sudo: true
+          egress-policy: block
+          allowed-endpoints: >
+            api.github.com:443
+            github.com:443
+            objects.githubusercontent.com:443
+            registry.npmjs.org:443
+      - name: Checkout
+        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608
+        with:
+          persist-credentials: false
+          show-progress: false
+      - name: Run unit tests
+        uses: warriors-life/.warriors-life-workflows/run-unit-tests@dev
+        with:
+          node-code-pre-test: ${{ inputs.node-code-pre-test }}
+      - name: Upload coverage file
+        uses: actions/upload-artifact@a8a3f3ad30e3422c9c7b888a15615d19a852ae32
+        with:
+          name: Coverage
+          path: test/coverage/coverage-final.json
+      - name: Move coverage file
+        run: mv coverage/coverage-final.json ../..
+      - name: Checkout base ref
+        run: git checkout ${{ github.base_ref || github.event.before || 'dev' }}
+      - name: Run units tests on base
+        uses: warriors-life/.warriors-life-workflows/run-unit-tests@dev
+        with:
+          node-code-pre-test: ${{ inputs.node-code-pre-test }}
+      - id: coverage-report
+        name: Generate coverage report
+        uses: ArtiomTr/jest-coverage-report-action@a0b93b002006a91fb6b4a779acbd89ab9d967da8
+        with:
+          coverage-file: ../coverage-final.json
+          base-coverage-file: tests/coverage/coverage-final.json
+          output: ${{ github.event_name == 'pull_request' && 'comment' || 'report-markdown' }}
+      - name: Write coverage report
+        if: "github.event_name != 'pull_request'"
+        run: echo ${{ steps.coverage-report.outputs.report }} > coverage/coverage-report.md
+      - name: Upload coverage report
+        if: "github.event_name != 'pull_request'"
+        uses: actions/upload-artifact@a8a3f3ad30e3422c9c7b888a15615d19a852ae32
+        with:
+          name: Coverage report
+          path: test/coverage/coverage-report.md
 
   push:
     if: github.ref_type == 'tag'
-    needs: call-workflow
+    needs: test-unit
     name: Publish package in the registry
     runs-on: ubuntu-latest
     permissions:

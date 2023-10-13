@@ -206,15 +206,7 @@ jobs:
         with:
           persist-credentials: false
           show-progress: false
-      - name: Setup Node
-        uses: warriors-life/.warriors-life-workflows/setup-node@dev
-        with:
-          working-directory: test
-      - name: Run pre-tests code
-        run: eval "$CODE"
-        env:
-          CODE: ${{ inputs.node-code-pre-test }}
       - name: Run unit tests
-        run: npm test
-        env:
-          NODE_ENV: ${{ (startsWith(github.ref, 'ref/heads/release') || startsWith(github.base_ref, 'ref/heads/release')) && 'production' || 'development' }}
+        uses: warriors-life/.warriors-life-workflows/run-unit-tests@dev
+        with:
+          node-code-pre-test: ${{ inputs.node-code-pre-test }}
