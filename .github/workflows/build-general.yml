@@ -44,7 +44,7 @@ jobs:
             bestpractices.coreinfrastructure.org:443
             oss-fuzz-build-logs.storage.googleapis.com:443
       - name: Checkout
-        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
         with:
           persist-credentials: false
           show-progress: false
@@ -79,7 +79,7 @@ jobs:
             api.github.com:443
             github.com:443
       - name: Checkout
-        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
         with:
           persist-credentials: false
           show-progress: false
@@ -109,7 +109,7 @@ jobs:
             pkg-containers.githubusercontent.com:443
             ghcr.io:443
       - name: Checkout
-        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
         with:
           persist-credentials: false
           show-progress: false
@@ -158,7 +158,7 @@ jobs:
             github.com:443
             api.snyk.io:443
       - name: Checkout
-        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
         with:
           persist-credentials: false
           show-progress: false
@@ -199,7 +199,7 @@ jobs:
             objects.githubusercontent.com:443
             registry.npmjs.org:443
       - name: Checkout
-        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
         with:
           persist-credentials: false
           show-progress: false
