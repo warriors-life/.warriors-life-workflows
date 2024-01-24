@@ -16,6 +16,9 @@ inputs:
   labels:
     description: 'Labels'
     required: 'true'
+  annotations:
+    description: 'Annotations'
+    required: 'true'
   push:
     description: 'Push or export locally'
     required: false
@@ -49,6 +52,7 @@ runs:
         context: src
         tags: ${{ inputs.tags }}
         labels: ${{ inputs.labels }}
+        annotations: ${{ inputs.annotations }}
         cache-from: type=gha
         cache-to: type=gha,mode=max
         provenance: false

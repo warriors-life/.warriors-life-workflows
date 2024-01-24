@@ -67,6 +67,7 @@ jobs:
     outputs:
       tags: ${{ steps.meta.outputs.tags }}
       labels: ${{ steps.meta.outputs.labels }}
+      annotations: ${{ steps.meta.outputs.annotations }}
       sanitized-name: ${{ steps.sanitize.outputs.name }}
     steps:
       - name: Harden runner
@@ -128,6 +129,7 @@ jobs:
         with:
           tags: ${{ steps.set-outputs.outputs.test-tag }}
           labels: ${{ needs.metadata.outputs.labels }}
+          annotations: ${{ needs.metadata.outputs.annotations }}
       - name: Upload Docker image
         uses: actions/upload-artifact@26f96dfa697d77e81fd5907df203aa23a56210a8
         with:
@@ -267,6 +269,7 @@ jobs:
           multi-platforms: true
           tags: ${{ needs.metadata.outputs.tags }}
           labels: ${{ needs.metadata.outputs.labels }}
+          annotations: ${{ needs.metadata.outputs.annotations }}
           push: true
       - name: Update Docker Hub description
         if: "!github.event.repository.private && (github.ref_type == 'tag')"
@@ -312,6 +315,7 @@ jobs:
           multi-platforms: true
           tags: ${{ needs.metadata.outputs.tags }}
           labels: ${{ needs.metadata.outputs.labels }}
+          annotations: ${{ needs.metadata.outputs.annotations }}
       - name: Extract release notes
         id: extract-release-notes
         uses: ffurrer2/extract-release-notes@4db7ff8e9cc8a442ab103fd3ddfaebd0f8f36e4c
