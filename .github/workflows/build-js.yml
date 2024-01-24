@@ -86,7 +86,7 @@ jobs:
         run: |
           cat <<"EOF"
           ${{ steps.coverage-report.outputs.report }}
-          EOF > /tmp/coverage-report.md
+          EOF> /tmp/coverage-report.md
       - name: Upload coverage report
         if: "github.event_name != 'pull_request'"
         uses: actions/upload-artifact@26f96dfa697d77e81fd5907df203aa23a56210a8
