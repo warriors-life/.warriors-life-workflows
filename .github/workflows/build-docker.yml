@@ -85,7 +85,7 @@ jobs:
           name: ${{ inputs.image-name }}
       - name: Extract metadata (tags, labels) for Docker
         id: meta
-        uses: docker/metadata-action@96383f45573cb7f253c731d3b3ab81c87ef81934
+        uses: docker/metadata-action@dbef88086f6cef02e264edb7dbf63250c17cef6c
         with:
           images: |
             ${{ github.event.repository.private && format('ghcr.io/{0}', inputs.image-name) || steps.sanitize.outputs.name }}
