@@ -205,8 +205,6 @@ jobs:
           sparse-checkout: test
           persist-credentials: false
           show-progress: false
-      - name: Set env variable
-        run: export TEST_IMAGE=${{ needs.build.outputs.test-tag }} >> $GITHUB_ENV
       - name: Download Docker image
         uses: actions/download-artifact@6b208ae046db98c579e8a3aa621ab581ff575935
         with:
@@ -217,7 +215,7 @@ jobs:
       - name: Run unit tests
         uses: warriors-life/.warriors-life-workflows/run-unit-tests@dev
         with:
-          node-code-pre-test: ${{ inputs.node-code-pre-test }}
+          node-code-pre-test: ${{ format('export TEST_IMAGE={0}\n{1}', needs.build.outputs.test-tag, inputs.node-code-pre-test) }}
 
   push:
     if: github.event_name != 'pull_request'
