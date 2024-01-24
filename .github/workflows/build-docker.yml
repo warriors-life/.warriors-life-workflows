@@ -215,7 +215,7 @@ jobs:
       - name: Run unit tests
         uses: warriors-life/.warriors-life-workflows/run-unit-tests@dev
         with:
-          node-code-pre-test: ${{ format("export TEST_IMAGE='{0}' && {1}", needs.build.outputs.test-tag, inputs.node-code-pre-test) }}
+          node-code-pre-test: ${{ format('export TEST_IMAGE="{0}" && {1}', needs.build.outputs.test-tag, inputs.node-code-pre-test) }}
 
   push:
     if: github.event_name != 'pull_request'
