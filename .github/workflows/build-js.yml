@@ -84,9 +84,9 @@ jobs:
       - name: Write coverage report
         if: "github.event_name != 'pull_request'"
         run: |
-          cat <<"EOF"
+          cat <<'EOF' >/tmp/coverage-report.md
           ${{ steps.coverage-report.outputs.report }}
-          EOF> /tmp/coverage-report.md
+          EOF
       - name: Upload coverage report
         if: "github.event_name != 'pull_request'"
         uses: actions/upload-artifact@26f96dfa697d77e81fd5907df203aa23a56210a8
