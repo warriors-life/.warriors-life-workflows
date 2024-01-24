@@ -81,17 +81,11 @@ jobs:
           coverage-file: /tmp/coverage.json
           base-coverage-file: test/coverage/coverage.json
           output: ${{ github.event_name == 'pull_request' && 'comment' || 'report-markdown' }}
-      - name: Write coverage report
+      - name: Show coverage report
         if: "github.event_name != 'pull_request'"
-        run: echo "$REPORT" > /tmp/coverage-report.md
+        run: echo "$REPORT" >> $GITHUB_STEP_SUMMARY
         env:
           REPORT: ${{ steps.coverage-report.outputs.report }}
-      - name: Upload coverage report
-        if: "github.event_name != 'pull_request'"
-        uses: actions/upload-artifact@26f96dfa697d77e81fd5907df203aa23a56210a8
-        with:
-          name: Coverage report
-          path: /tmp/coverage-report.md
 
   push:
     if: github.ref_type == 'tag'
