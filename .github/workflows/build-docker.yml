@@ -129,7 +129,7 @@ jobs:
           tags: ${{ steps.set-outputs.outputs.test-tag }}
           labels: ${{ needs.metadata.outputs.labels }}
       - name: Upload Docker image
-        uses: actions/upload-artifact@a8a3f3ad30e3422c9c7b888a15615d19a852ae32
+        uses: actions/upload-artifact@26f96dfa697d77e81fd5907df203aa23a56210a8
         with:
           name: Docker image
           path: /tmp/image.tar
@@ -166,7 +166,7 @@ jobs:
           args: --sarif-file-output=snyk-docker.sarif
         continue-on-error: true
       - name: Upload output
-        uses: actions/upload-artifact@a8a3f3ad30e3422c9c7b888a15615d19a852ae32
+        uses: actions/upload-artifact@26f96dfa697d77e81fd5907df203aa23a56210a8
         with:
           name: Snyk (Docker)
           path: snyk-docker.sarif
