@@ -83,10 +83,9 @@ jobs:
           output: ${{ github.event_name == 'pull_request' && 'comment' || 'report-markdown' }}
       - name: Write coverage report
         if: "github.event_name != 'pull_request'"
-        run: |
-          cat <<'EOF' >/tmp/coverage-report.md
-          ${{ steps.coverage-report.outputs.report }}
-          EOF
+        run: echo "$REPORT" > /tmp/coverage-report.md
+        env:
+          REPORT: ${{ steps.coverage-report.outputs.report }}
       - name: Upload coverage report
         if: "github.event_name != 'pull_request'"
         uses: actions/upload-artifact@26f96dfa697d77e81fd5907df203aa23a56210a8
