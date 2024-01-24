@@ -57,3 +57,5 @@ runs:
         cache-to: type=gha,mode=max
         provenance: false
         outputs: ${{ inputs.push == 'true' && 'type=registry' || 'type=docker,dest=/tmp/image.tar' }}
+      env:
+        DOCKER_METADATA_ANNOTATIONS_LEVELS: manifest,index
