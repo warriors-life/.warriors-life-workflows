@@ -271,7 +271,7 @@ jobs:
           push: true
       - name: Update Docker Hub description
         if: "!github.event.repository.private && (github.ref_type == 'tag')"
-        uses: peter-evans/dockerhub-description@dc67fad7001ef9e8e3c124cb7a64e16d0a63d864
+        uses: peter-evans/dockerhub-description@e98e4d1628a5f3be2be7c231e50981aee98723ae
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME || steps.split.outputs.username }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
