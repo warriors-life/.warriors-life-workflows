@@ -33,6 +33,7 @@ jobs:
     name: Run unit tests
     permissions:
       pull-requests: write
+      checks: write
       contents: read
     runs-on: ubuntu-latest
     steps:
