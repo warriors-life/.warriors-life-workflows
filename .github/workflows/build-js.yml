@@ -55,7 +55,7 @@ jobs:
         uses: warriors-life/.warriors-life-workflows/run-unit-tests@dev
         with:
           node-code-pre-test: ${{ inputs.node-code-pre-test }}
-          coverage: coverage/coverage.json
+          report: coverage/coverage.json
       - name: Upload coverage file
         uses: actions/upload-artifact@26f96dfa697d77e81fd5907df203aa23a56210a8
         with:
@@ -73,7 +73,7 @@ jobs:
         uses: warriors-life/.warriors-life-workflows/run-unit-tests@dev
         with:
           node-code-pre-test: ${{ inputs.node-code-pre-test }}
-          coverage: coverage/coverage.json
+          report: coverage/coverage.json
       - id: coverage-report
         name: Generate coverage report
         uses: ArtiomTr/jest-coverage-report-action@d438b94580c2c47599ce7abc62d26d1acd1661eb
