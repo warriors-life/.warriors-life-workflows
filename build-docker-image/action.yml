@@ -35,7 +35,7 @@ runs:
         persist-credentials: false
         show-progress: false
     - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@f95db51fddba0c2d1ec667646a06c2ce06100226
+      uses: docker/setup-buildx-action@0d103c3126aa41d772a8362f6aa67afac040f80c
       with:
         version: https://github.com/docker/buildx.git#30feaa1a915b869ebc2eea6328624b49facd4bfb
         driver-opts: image=moby/buildkit:v0.12.4@sha256:0e5755bb0a836068ffe491e2d04d44815a747910e7a14259810b22ac57189bc3
