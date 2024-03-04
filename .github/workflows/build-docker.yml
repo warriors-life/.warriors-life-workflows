@@ -153,7 +153,7 @@ jobs:
             api.github.com:443
             api.snyk.io:443
       - name: Download Docker image
-        uses: actions/download-artifact@87c55149d96e628cc2ef7e6fc2aab372015aec85
+        uses: actions/download-artifact@c850b930e6ba138125429b7e5c93fc707a7f8427
         with:
           name: Docker image
           path: /tmp
@@ -206,7 +206,7 @@ jobs:
           persist-credentials: false
           show-progress: false
       - name: Download Docker image
-        uses: actions/download-artifact@87c55149d96e628cc2ef7e6fc2aab372015aec85
+        uses: actions/download-artifact@c850b930e6ba138125429b7e5c93fc707a7f8427
         with:
           name: Docker image
           path: /tmp
