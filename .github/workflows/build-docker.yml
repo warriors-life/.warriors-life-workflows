@@ -338,7 +338,7 @@ jobs:
           tag: ${{ github.ref_name }}
           archivename: ${{ steps.archive-name.outputs.name }}
       - name: Release
-        uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844
+        uses: softprops/action-gh-release@a6c7483a42ee9d5daced968f6c217562cd680f7f
         with:
           files: |
             /tmp/image.tar
