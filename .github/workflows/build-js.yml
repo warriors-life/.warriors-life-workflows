@@ -199,10 +199,11 @@ jobs:
           tag: ${{ github.ref_name }}
           archivename: ${{ steps.archive-name.outputs.name }}
       - name: Release
-        uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844
+        uses: softprops/action-gh-release@9d7c94cfd0a1f3ed45544c887983e9fa900f0564
         with:
           files: |
             *.tgz
             *.tgz.asc
             ../${{ steps.archive-name.outputs.name }}.tar.gz.asc
           body: ${{ steps.extract-release-notes.outputs.release_notes }}
+          fail_on_unmatched_files: true
