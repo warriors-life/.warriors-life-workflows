@@ -77,7 +77,7 @@ jobs:
           report: coverage/coverage.json
       - id: coverage-report
         name: Generate coverage report
-        uses: ArtiomTr/jest-coverage-report-action@d438b94580c2c47599ce7abc62d26d1acd1661eb
+        uses: ArtiomTr/jest-coverage-report-action@c026e98ae079f4b0b027252c8e957f5ebd420610
         with:
           coverage-file: /tmp/coverage.json
           base-coverage-file: test/coverage/coverage.json
