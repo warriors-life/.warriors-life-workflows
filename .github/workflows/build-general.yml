@@ -84,7 +84,7 @@ jobs:
           persist-credentials: false
           show-progress: false
       - name: Dependency review
-        uses: actions/dependency-review-action@9129d7d40b8c12c1ed0f60400d00c92d437adcce
+        uses: actions/dependency-review-action@0fa40c3c10055986a88de3baa0d6ec17c5a894b3
         with:
           base-ref: ${{ github.base_ref || 'dev' }}
           head-ref: ${{ github.head_ref || github.event.after || 'dev' }}
