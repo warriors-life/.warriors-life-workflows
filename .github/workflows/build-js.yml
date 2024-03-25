@@ -120,7 +120,7 @@ jobs:
         run: mv README.md src && mv LICENSE src
       - name: Publish package to NPM
         if: "!github.event.repository.private"
-        uses: JS-DevTools/npm-publish@4b07b26a2f6e0a51846e1870223e545bae91c552
+        uses: JS-DevTools/npm-publish@79051c040d27c2202f1e56093d4f3a2b804f4154
         with:
           token: ${{ secrets.NPM_TOKEN }}
           package: src
@@ -134,14 +134,14 @@ jobs:
           path: src/package.json
       - name: Publish package to NPM (scoped)
         if: "!github.event.repository.private"
-        uses: JS-DevTools/npm-publish@4b07b26a2f6e0a51846e1870223e545bae91c552
+        uses: JS-DevTools/npm-publish@79051c040d27c2202f1e56093d4f3a2b804f4154
         with:
           token: ${{ secrets.NPM_TOKEN }}
           package: src
           provenance: true
           access: public
       - name: Publish package to GPR
-        uses: JS-DevTools/npm-publish@4b07b26a2f6e0a51846e1870223e545bae91c552
+        uses: JS-DevTools/npm-publish@79051c040d27c2202f1e56093d4f3a2b804f4154
         with:
           registry: 'https://npm.pkg.github.com/'
           token: ${{ github.token }}
