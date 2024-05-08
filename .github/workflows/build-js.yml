@@ -127,7 +127,7 @@ jobs:
           provenance: true
           access: public
       - name: Modify package name
-        uses: maxgfr/github-change-json@8f5aff1c3cabbd646b9896a5c1ca74c0aa72ece0
+        uses: maxgfr/github-change-json@8aedf0b5fe704df20d6e7bd9a55278a5c4a653d0
         with:
           key: name
           value: ${{ format('@{0}', github.repository) }}
