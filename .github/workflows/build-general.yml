@@ -169,6 +169,8 @@ jobs:
         with:
           args: --sarif-file-output=snyk-js.sarif --all-projects
         continue-on-error: true
+      - name: Replace security-severity for license-related findings # https://github.com/github/codeql-action/issues/2187
+        run: sed -i 's/"security-severity": "(undefined|null)"/"security-severity": "0"/g' snyk-js.sarif
       - name: Upload output
         uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808
         with:
