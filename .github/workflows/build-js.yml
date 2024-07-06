@@ -76,6 +76,7 @@ jobs:
         with:
           node-code-pre-test: ${{ inputs.node-code-pre-test }}
           report: coverage/coverage.json
+          install-src: true
       - id: coverage-report
         name: Generate coverage report
         uses: ArtiomTr/jest-coverage-report-action@c026e98ae079f4b0b027252c8e957f5ebd420610
