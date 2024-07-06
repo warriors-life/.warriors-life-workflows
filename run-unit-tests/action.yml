@@ -7,14 +7,21 @@ inputs:
     description: 'Report path'
     required: false
     default: ''
+  install-src:
+    description: 'Install packages in src directory'
+    required: false
+    default: 'false'
 
 runs:
   using: "composite"
   steps:
-    - name: Setup Node
+    - name: Setup Node in test
       uses: warriors-life/.warriors-life-workflows/setup-node@dev
       with:
         working-directory: test
+    - name: Setup Node in src
+      if: inputs.install-src == 'true'
+      uses: warriors-life/.warriors-life-workflows/setup-node@dev
     - name: Run pre-tests code
       run: eval "$CODE"
       env:

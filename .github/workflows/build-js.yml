@@ -57,6 +57,7 @@ jobs:
         with:
           node-code-pre-test: ${{ inputs.node-code-pre-test }}
           report: coverage/coverage.json
+          install-src: true
       - name: Upload coverage file
         uses: actions/upload-artifact@0b2256b8c012f0828dc542b3febcab082c67f72b
         with:
