@@ -25,5 +25,6 @@ runs:
       run: ${{ inputs.report && format('npm test -- --ci --json --outputFile="{0}"', inputs.report) || 'npm test' }}
       env:
         NODE_ENV: ${{ (startsWith(github.ref, 'ref/heads/release') || startsWith(github.base_ref, 'ref/heads/release')) && 'production' || 'development' }}
+        CI: 'true'
       shell: bash
       working-directory: test
