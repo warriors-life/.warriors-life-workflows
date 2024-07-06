@@ -48,7 +48,7 @@ jobs:
             objects.githubusercontent.com:443
             registry.npmjs.org:443
       - name: Checkout
-        uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332
         with:
           persist-credentials: false
           show-progress: false
@@ -65,7 +65,7 @@ jobs:
       - name: Move coverage file
         run: mv test/coverage/coverage.json /tmp
       - name: Checkout base ref
-        uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332
         with:
           persist-credentials: false
           show-progress: false
@@ -109,7 +109,7 @@ jobs:
             github.com:443
             registry.npmjs.org:443
       - name: Checkout
-        uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332
         with:
           sparse-checkout: src
           persist-credentials: false
@@ -168,7 +168,7 @@ jobs:
             github.com:443
             registry.npmjs.org:443
       - name: Checkout
-        uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332
         with:
           persist-credentials: false
           show-progress: false
