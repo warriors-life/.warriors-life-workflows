@@ -60,7 +60,7 @@ jobs:
           path: scorecard.sarif
       - name: Upload SARIF to dashboard
         if: "!github.event.repository.private"
-        uses: github/codeql-action/upload-sarif@b611370bb5703a7efb587f9d136a52ea24c5c38c
+        uses: github/codeql-action/upload-sarif@4fa2a7953630fd2f3fb380f21be14ede0169dd4f
         with:
           sarif_file: scorecard.sarif
           category: Scorecard
@@ -114,13 +114,13 @@ jobs:
           persist-credentials: false
           show-progress: false
       - name: Init
-        uses: github/codeql-action/init@b611370bb5703a7efb587f9d136a52ea24c5c38c
+        uses: github/codeql-action/init@4fa2a7953630fd2f3fb380f21be14ede0169dd4f
         with:
           languages: javascript
           packs: codeql/javascript-queries@0.8.0
           queries: security-and-quality, security-experimental
       - name: Scan
-        uses: github/codeql-action/analyze@b611370bb5703a7efb587f9d136a52ea24c5c38c
+        uses: github/codeql-action/analyze@4fa2a7953630fd2f3fb380f21be14ede0169dd4f
 
   run-snyk:
     name: Run Snyk?
@@ -179,7 +179,7 @@ jobs:
           path: snyk-js.sarif
       - name: Upload SARIF to dashboard
         if: "!github.event.repository.private"
-        uses: github/codeql-action/upload-sarif@b611370bb5703a7efb587f9d136a52ea24c5c38c
+        uses: github/codeql-action/upload-sarif@4fa2a7953630fd2f3fb380f21be14ede0169dd4f
         with:
           category: Snyk (JS)
           sarif_file: snyk-js.sarif
