@@ -110,6 +110,7 @@ jobs:
             api.github.com:443
             npm.pkg.github.com:443
             github.com:443
+            objects.githubusercontent.com
             registry.npmjs.org:443
       - name: Checkout
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332
@@ -169,6 +170,7 @@ jobs:
             api.github.com:443
             uploads.github.com:443
             github.com:443
+            objects.githubusercontent.com:443
             registry.npmjs.org:443
       - name: Checkout
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332
