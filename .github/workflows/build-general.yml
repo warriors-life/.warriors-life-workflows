@@ -54,7 +54,7 @@ jobs:
           results_file: scorecard.sarif
           results_format: sarif
       - name: Upload output
-        uses: actions/upload-artifact@0b2256b8c012f0828dc542b3febcab082c67f72b
+        uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882
         with:
           name: Scorecard
           path: scorecard.sarif
@@ -173,7 +173,7 @@ jobs:
         run: |
           sed -i 's/"security-severity": "\(undefined\|null\)"/"security-severity": "0"/g' snyk-js.sarif
       - name: Upload output
-        uses: actions/upload-artifact@0b2256b8c012f0828dc542b3febcab082c67f72b
+        uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882
         with:
           name: Snyk (JS)
           path: snyk-js.sarif
