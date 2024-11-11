@@ -23,6 +23,7 @@ jobs:
     name: Check supply chain with Scorecard
     permissions:
       security-events: write
+      id-token: write
       actions: read
       contents: read
       issues: read
@@ -53,6 +54,7 @@ jobs:
         with:
           results_file: scorecard.sarif
           results_format: sarif
+          publish_results: true
       - name: Upload output
         uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882
         with:

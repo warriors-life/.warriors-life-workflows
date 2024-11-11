@@ -28,6 +28,7 @@ jobs:
     secrets: inherit
     permissions:
       security-events: write
+      id-token: write
       actions: read
       contents: read
       issues: read
