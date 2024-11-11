@@ -79,7 +79,7 @@ jobs:
           install-src: true
       - id: coverage-report
         name: Generate coverage report
-        uses: ArtiomTr/jest-coverage-report-action@c026e98ae079f4b0b027252c8e957f5ebd420610
+        uses: ArtiomTr/jest-coverage-report-action@262a7bb0b20c4d1d6b6b026af0f008f78da72788
         with:
           coverage-file: /tmp/coverage.json
           base-coverage-file: test/coverage/coverage.json
