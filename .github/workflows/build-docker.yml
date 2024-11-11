@@ -253,14 +253,14 @@ jobs:
         env:
           name: ${{ inputs.image-name }}
       - name: Login to GHCR
-        uses: docker/login-action@0d4c9c5ea7693da7b068278f7b52bda2a190a446
+        uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ github.token }}
       - name: Login to Docker Hub
         if: "!github.event.repository.private"
-        uses: docker/login-action@0d4c9c5ea7693da7b068278f7b52bda2a190a446
+        uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME || steps.split.outputs.username }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
