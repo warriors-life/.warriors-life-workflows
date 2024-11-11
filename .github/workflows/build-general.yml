@@ -40,7 +40,8 @@ jobs:
             github.com:443
             auth.docker.io:443
             index.docker.io:443
-            sigstore.dev:443
+            fulcio.sigstore.dev:443
+            tuf-repo-cdn.sigstore.dev:443
             api.osv.dev:443
             api.deps.dev:443
             www.bestpractices.dev:443
