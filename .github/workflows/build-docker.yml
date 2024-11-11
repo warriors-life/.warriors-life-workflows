@@ -131,7 +131,7 @@ jobs:
           labels: ${{ needs.metadata.outputs.labels }}
           annotations: ${{ needs.metadata.outputs.annotations }}
       - name: Upload Docker image
-        uses: actions/upload-artifact@0b2256b8c012f0828dc542b3febcab082c67f72b
+        uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882
         with:
           name: Docker image
           path: /tmp/image.tar
@@ -171,7 +171,7 @@ jobs:
         run: |
           sed -i 's/"security-severity": "\(undefined\|null\)"/"security-severity": "0"/g' snyk-docker.sarif
       - name: Upload output
-        uses: actions/upload-artifact@0b2256b8c012f0828dc542b3febcab082c67f72b
+        uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882
         with:
           name: Snyk (Docker)
           path: snyk-docker.sarif
