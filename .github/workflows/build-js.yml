@@ -28,6 +28,41 @@ jobs:
     with:
       node-code-pre-test: DISABLE
 
+  sbom:
+    if: "inputs.node-code-pre-test != 'DISABLE'"
+    needs: call-workflow
+    name: Generate SBOM
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    steps:
+      - name: Harden runner
+        uses: step-security/harden-runner@91182cccc01eb5e619899d80e4e971d6181294a7
+        with:
+          disable-sudo: true
+          egress-policy: audit
+          allowed-endpoints: >
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+          show-progress: false
+      - name: Move README and license
+        run: mv README.md src && mv LICENSE src
+      - name: Generate SBOM
+        uses: anchore/sbom-action@fc46e51fd3cb168ffb36c6d1915723c47db58abb
+        with:
+          path: src
+          output-file: /tmp/sbom.spdx.json
+          upload-artifact: false
+          upload-release-assets: false
+          syft-version: v1.16.0
+      - name: Upload SBOM
+        uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882
+        with:
+          name: SBOM
+          path: /tmp/sbom.spdx.json
+
   test-unit:
     if: "inputs.node-code-pre-test != 'DISABLE'"
     needs: call-workflow
@@ -93,7 +128,7 @@ jobs:
 
   push:
     if: github.ref_type == 'tag'
-    needs: test-unit
+    needs: [sbom, test-unit]
     name: Publish package in the registry
     runs-on: ubuntu-latest
     permissions:
@@ -178,12 +213,24 @@ jobs:
           package: src
           provenance: ${{ !github.event.repository.private }}
           access: ${{ github.event.repository.private && 'restricted' || 'public' }}
-      - name: Attest
+      - name: Download SBOM
+        uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16
+        with:
+          name: SBOM
+          path: /tmp
+      - name: Attest packages with SLSA provenance
         uses: actions/attest-build-provenance@ef244123eb79f2f7a7e75d99086184180e6d0018
         with:
           subject-path: |
             ${{ steps.package.outputs.archive-name }}
             ${{ steps.package-scoped.outputs.archive-name }}
+      - name: Attest packages with SBOM
+        uses: actions/attest-sbom@5026d3663739160db546203eeaffa6aa1c51a4d6
+        with:
+          subject-path: |
+            ${{ steps.package.outputs.archive-name }}
+            ${{ steps.package-scoped.outputs.archive-name }}
+          sbom-path: /tmp/sbom.spdx.json
 
   release:
     if: github.ref_type == 'tag'
@@ -214,6 +261,11 @@ jobs:
       - name: Extract release notes
         id: extract-release-notes
         uses: ffurrer2/extract-release-notes@9989ccec43d726ef05aa1cd7b2854fb96b6df6ab
+      - name: Download SBOM
+        uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16
+        with:
+          name: SBOM
+          path: /tmp
       - name: Import GPG key
         uses: crazy-max/ghaction-import-gpg@cb9bde2e2525e640591a934b1fd28eef1dcaf5e5
         with:
@@ -233,6 +285,7 @@ jobs:
           mv README.md src && mv LICENSE src
           npm pack src/
           gpg --armor --detach-sign *.tgz
+          gpg --armor --detach-sign /tmp/sbom.spdx.json
         env:
           tag: ${{ github.ref_name }}
           archivename: ${{ steps.archive-name.outputs.name }}
@@ -243,5 +296,7 @@ jobs:
             *.tgz
             *.tgz.asc
             ../${{ steps.archive-name.outputs.name }}.tar.gz.asc
+            /tmp/sbom.spdx.json
+            /tmp/sbom.spdx.json.asc
           body: ${{ steps.extract-release-notes.outputs.release_notes }}
           fail_on_unmatched_files: true
