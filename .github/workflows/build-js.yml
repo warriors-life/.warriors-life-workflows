@@ -62,7 +62,7 @@ jobs:
       - name: Upload coverage file
         uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882
         with:
-          name: Coverage
+          name: Test coverage
           path: test/coverage/coverage.json
       - name: Move coverage file
         run: mv test/coverage/coverage.json /tmp
@@ -99,6 +99,7 @@ jobs:
     permissions:
       packages: write
       id-token: write
+      attestations: write
       contents: read
     steps:
       - name: Harden runner
@@ -123,6 +124,18 @@ jobs:
         uses: warriors-life/.warriors-life-workflows/setup-node@dev
       - name: Move README and license
         run: mv README.md src && mv LICENSE src
+      - name: Pack package
+        id: package
+        run: |
+          npm pack src/
+          files=(*.tgz)
+          mv "$files[0]" "../$files[0]"
+          echo "archive-name=../$files[0]" >> $GITHUB_OUTPUT
+      - name: Upload package archive
+        uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882
+        with:
+          name: Package
+          path: ${{ steps.package.outputs.archive-name }}
       - name: Publish package to NPM
         if: "!github.event.repository.private"
         uses: JS-DevTools/npm-publish@19c28f1ef146469e409470805ea4279d47c3d35c
@@ -137,6 +150,18 @@ jobs:
           key: name
           value: ${{ format('@{0}', github.repository) }}
           path: src/package.json
+      - name: Pack package (scoped)
+        id: package-scoped
+        run: |
+          npm pack src/
+          files=(*.tgz)
+          mv "$files[0]" "../$files[0]"
+          echo "archive-name=../$files[0]" >> $GITHUB_OUTPUT
+      - name: Upload package archive (scoped)
+        uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882
+        with:
+          name: Package (scoped)
+          path: ${{ steps.package-scoped.outputs.archive-name }}
       - name: Publish package to NPM (scoped)
         if: "!github.event.repository.private"
         uses: JS-DevTools/npm-publish@19c28f1ef146469e409470805ea4279d47c3d35c
@@ -153,6 +178,13 @@ jobs:
           package: src
           provenance: ${{ !github.event.repository.private }}
           access: ${{ github.event.repository.private && 'restricted' || 'public' }}
+      - name: Attest
+        id: attest
+        uses: actions/attest-build-provenance@ef244123eb79f2f7a7e75d99086184180e6d0018
+        with:
+          subject-path: |
+            ${{ steps.package.outputs.archive-name }}
+            ${{ steps.package-scoped.outputs.archive-name }}
 
   release:
     if: github.ref_type == 'tag'
