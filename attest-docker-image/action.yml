@@ -1,0 +1,47 @@
+name: 'Attest Docker image'
+inputs:
+  digest:
+    description: 'Docker image digest'
+    required: true
+  image-name:
+    description: 'Docker image name'
+    required: true
+  registry:
+    description: 'Registry'
+    required: true
+  sbom-artifact-name:
+    description: 'SBOM artifact name (SBOM (XXX))'
+    required: true
+  sbom-filename:
+    description: 'SBOM filename (sbom-XXX.spdx.json)'
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Generate SBOM
+      uses: anchore/sbom-action@fc46e51fd3cb168ffb36c6d1915723c47db58abb
+      with:
+        image: ${{ inputs.registry == 'index.docker.io' && inputs.image-name || format('{0}/{1}', inputs.registry, inputs.image-name) }}
+        output-file: /tmp/sbom-${{ inputs.sbom-filename }}.spdx.json
+        upload-artifact: false
+        upload-release-assets: false
+        syft-version: v1.16.0
+    - name: Attest image with SLSA provenance
+      uses: actions/attest-build-provenance@ef244123eb79f2f7a7e75d99086184180e6d0018
+      with:
+        subject-name: ${{ inputs.registry }}/${{ inputs.image-name }}
+        subject-digest: ${{ inputs.digest }}
+        push-to-registry: true
+    - name: Attest image with SBOM
+      uses: actions/attest-sbom@5026d3663739160db546203eeaffa6aa1c51a4d6
+      with:
+        subject-name: ${{ inputs.registry }}/${{ inputs.image-name }}
+        subject-digest: ${{ inputs.digest }}
+        sbom-path: /tmp/sbom-${{ inputs.sbom-filename }}.spdx.json
+        push-to-registry: true
+    - name: Upload SBOM
+      uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882
+      with:
+        name: SBOM (${{ inputs.sbom-artifact-name }})
+        path: /tmp/sbom-${{ inputs.sbom-filename }}.spdx.json
