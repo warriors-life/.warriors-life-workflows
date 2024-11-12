@@ -12,17 +12,21 @@ inputs:
     default: 'false'
   tags:
     description: 'Tags'
-    required: 'true'
+    required: true
   labels:
     description: 'Labels'
-    required: 'true'
+    required: true
   annotations:
     description: 'Annotations'
-    required: 'true'
+    required: true
   push:
     description: 'Push or export locally'
     required: false
     default: 'false'
+  dest:
+    description: 'Where the built image should go'
+    required: false
+    default: '/tmp/image.tar'
 outputs:
   digest:
     description: 'SHA digest of built image'
@@ -60,7 +64,8 @@ runs:
         annotations: ${{ inputs.annotations }}
         cache-from: type=gha
         cache-to: type=gha,mode=max
-        provenance: false
-        outputs: ${{ inputs.push == 'true' && 'type=registry' || 'type=docker,dest=/tmp/image.tar' }}
+        provenance: ${{ inputs.push == 'true' && 'mode=max' }}
+        sbom: ${{ inputs.push == 'true' }}
+        outputs: ${{ inputs.push == 'true' && 'type=registry' || format('type=docker,dest={0}', inputs.dest) }}
       env:
         DOCKER_METADATA_ANNOTATIONS_LEVELS: manifest,index

@@ -137,6 +137,48 @@ jobs:
           name: Docker image
           path: /tmp/image.tar
 
+  sbom:
+    needs: metadata
+    name: Generate SBOM
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Harden runner
+        uses: step-security/harden-runner@91182cccc01eb5e619899d80e4e971d6181294a7
+        with:
+          disable-sudo: true
+          egress-policy: block
+          allowed-endpoints: >
+            github.com:443
+            objects.githubusercontent.com:443
+            raw.githubusercontent.com:443
+            registry-1.docker.io:443
+            auth.docker.io:443
+            docker.io:443
+            production.cloudflare.docker.com:443
+            dl-cdn.alpinelinux.org:443
+      - name: Build
+        uses: warriors-life/.warriors-life-workflows/build-docker-image@dev
+        with:
+          multi-platforms: true
+          tags: ${{ needs.metadata.outputs.tags }}
+          labels: ${{ needs.metadata.outputs.labels }}
+          annotations: ${{ needs.metadata.outputs.annotations }}
+      - name: Generate SBOM
+        uses: anchore/sbom-action@fc46e51fd3cb168ffb36c6d1915723c47db58abb
+        with:
+          image: ${{ inputs.image-name }}
+          output-file: /tmp/sbom.spdx.json
+          upload-artifact: false
+          upload-release-assets: false
+          syft-version: v1.16.0
+      - name: Upload SBOM
+        uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882
+        with:
+          name: SBOM
+          path: /tmp/sbom.spdx.json
+
   snyk-docker:
     if: needs.call-workflow.outputs.run-snyk == 'true'
     needs: [build, call-workflow]
@@ -223,7 +265,7 @@ jobs:
 
   push:
     if: github.event_name != 'pull_request'
-    needs: [hadolint, metadata, build, snyk-docker, test-unit]
+    needs: [hadolint, metadata, build, sbom, snyk-docker, test-unit]
     name: Push Docker image to the registry
     runs-on: ubuntu-latest
     permissions:
@@ -278,18 +320,38 @@ jobs:
           labels: ${{ needs.metadata.outputs.labels }}
           annotations: ${{ needs.metadata.outputs.annotations }}
           push: true
-      - name: Attest (GHCR)
+      - name: Download SBOM
+        uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16
+        with:
+          name: SBOM
+          path: /tmp
+      - name: Attest image with SLSA provenance (GHCR)
         uses: actions/attest-build-provenance@ef244123eb79f2f7a7e75d99086184180e6d0018
         with:
           subject-name: ghcr.io/${{ inputs.image-name }}
           subject-digest: ${{ steps.build.outputs.digest }}
           push-to-registry: true
-      - name: Attest (Docker Hub)
+      - name: Attest image with SBOM (GHCR)
+        uses: actions/attest-sbom@5026d3663739160db546203eeaffa6aa1c51a4d6
+        with:
+          subject-name: ghcr.io/${{ inputs.image-name }}
+          subject-digest: ${{ steps.build.outputs.digest }}
+          sbom-path: /tmp/sbom.spdx.json
+          push-to-registry: true
+      - name: Attest image with SLSA provenance (Docker Hub)
         if: "!github.event.repository.private"
         uses: actions/attest-build-provenance@ef244123eb79f2f7a7e75d99086184180e6d0018
         with:
           subject-name: index.docker.io/${{ needs.metadata.outputs.sanitized-name }}
           subject-digest: ${{ steps.build.outputs.digest }}
+          push-to-registry: true
+      - name: Attest image with SBOM (Docker Hub)
+        if: "!github.event.repository.private"
+        uses: actions/attest-sbom@5026d3663739160db546203eeaffa6aa1c51a4d6
+        with:
+          subject-name: index.docker.io/${{ needs.metadata.outputs.sanitized-name }}
+          subject-digest: ${{ steps.build.outputs.digest }}
+          sbom-path: /tmp/sbom.spdx.json
           push-to-registry: true
       - name: Update Docker Hub description
         if: "!github.event.repository.private && (github.ref_type == 'tag')"
@@ -339,6 +401,11 @@ jobs:
       - name: Extract release notes
         id: extract-release-notes
         uses: ffurrer2/extract-release-notes@9989ccec43d726ef05aa1cd7b2854fb96b6df6ab
+      - name: Download SBOM
+        uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16
+        with:
+          name: SBOM
+          path: /tmp
       - name: Import GPG key
         uses: crazy-max/ghaction-import-gpg@cb9bde2e2525e640591a934b1fd28eef1dcaf5e5
         with:
@@ -356,6 +423,7 @@ jobs:
           git -c tar.tar.gz.command='gzip -cn' archive --format=tar.gz --prefix="$archivename/" -o "../$archivename.tar.gz" "$tag"
           gpg --armor --detach-sign "../$archivename.tar.gz"
           gpg --armor --detach-sign /tmp/image.tar
+          gpg --armor --detach-sign /tmp/sbom.spdx.json
         env:
           tag: ${{ github.ref_name }}
           archivename: ${{ steps.archive-name.outputs.name }}
@@ -366,5 +434,7 @@ jobs:
             /tmp/image.tar
             /tmp/image.tar.asc
             ../${{ steps.archive-name.outputs.name }}.tar.gz.asc
+            /tmp/sbom.spdx.json
+            /tmp/sbom.spdx.json.asc
           body: ${{ steps.extract-release-notes.outputs.release_notes }}
           fail_on_unmatched_files: true
