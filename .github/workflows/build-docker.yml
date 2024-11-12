@@ -288,7 +288,7 @@ jobs:
         if: "!github.event.repository.private"
         uses: actions/attest-build-provenance@ef244123eb79f2f7a7e75d99086184180e6d0018
         with:
-          subject-name: index.docker.io/${{ inputs.image-name }}
+          subject-name: index.docker.io/${{ needs.metadata.outputs.sanitized-name }}
           subject-digest: ${{ steps.build.outputs.digest }}
           push-to-registry: true
       - name: Update Docker Hub description
