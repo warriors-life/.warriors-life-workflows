@@ -227,6 +227,8 @@ jobs:
     name: Push Docker image to the registry
     runs-on: ubuntu-latest
     permissions:
+      id-token: write
+      attestations: write
       packages: write
       contents: read
     steps:
