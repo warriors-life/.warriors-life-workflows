@@ -239,6 +239,7 @@ jobs:
           egress-policy: block
           allowed-endpoints: >
             *.sigstore.dev:443
+            api.github.com:443
             github.com:443
             ghcr.io:443
             registry-1.docker.io:443
