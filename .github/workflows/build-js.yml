@@ -199,6 +199,7 @@ jobs:
         run: |
           git -c tar.tar.gz.command='gzip -cn' archive --format=tar.gz --prefix="$archivename/" -o "../$archivename.tar.gz" "$tag"
           gpg --armor --detach-sign "../$archivename.tar.gz"
+          mv README.md src && mv LICENSE src
           npm pack src/
           gpg --armor --detach-sign *.tgz
         env:
