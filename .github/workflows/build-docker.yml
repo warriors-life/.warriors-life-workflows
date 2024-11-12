@@ -266,6 +266,7 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME || steps.split.outputs.username }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
       - name: Build and push Docker image
+        id: build
         uses: warriors-life/.warriors-life-workflows/build-docker-image@dev
         with:
           multi-platforms: true
@@ -273,6 +274,19 @@ jobs:
           labels: ${{ needs.metadata.outputs.labels }}
           annotations: ${{ needs.metadata.outputs.annotations }}
           push: true
+      - name: Attest (GHCR)
+        uses: actions/attest-build-provenance@ef244123eb79f2f7a7e75d99086184180e6d0018
+        with:
+          subject-name: ghcr.io/${{ inputs.image-name }}
+          subject-digest: ${{ steps.build.outputs.digest }}
+          push-to-registry: true
+      - name: Attest (Docker Hub)
+        if: "!github.event.repository.private"
+        uses: actions/attest-build-provenance@ef244123eb79f2f7a7e75d99086184180e6d0018
+        with:
+          subject-name: index.docker.io/${{ inputs.image-name }}
+          subject-digest: ${{ steps.build.outputs.digest }}
+          push-to-registry: true
       - name: Update Docker Hub description
         if: "!github.event.repository.private && (github.ref_type == 'tag')"
         uses: peter-evans/dockerhub-description@e98e4d1628a5f3be2be7c231e50981aee98723ae

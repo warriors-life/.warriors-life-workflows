@@ -179,7 +179,6 @@ jobs:
           provenance: ${{ !github.event.repository.private }}
           access: ${{ github.event.repository.private && 'restricted' || 'public' }}
       - name: Attest
-        id: attest
         uses: actions/attest-build-provenance@ef244123eb79f2f7a7e75d99086184180e6d0018
         with:
           subject-path: |
