@@ -369,8 +369,7 @@ jobs:
           git -c tar.tar.gz.command='gzip -cn' archive --format=tar.gz --prefix="$archivename/" -o "../$archivename.tar.gz" "$tag"
           gpg --armor --detach-sign "../$archivename.tar.gz"
           gpg --armor --detach-sign /tmp/image.tar
-          gpg --armor --detach-sign /tmp/sbom-ghcr.spdx.json
-          gpg --armor --detach-sign /tmp/sbom-dockerhub.spdx.json
+          gpg --armor --detach-sign /tmp/sbom-*.spdx.json
         env:
           tag: ${{ github.ref_name }}
           archivename: ${{ steps.archive-name.outputs.name }}
@@ -381,9 +380,7 @@ jobs:
             /tmp/image.tar
             /tmp/image.tar.asc
             ../${{ steps.archive-name.outputs.name }}.tar.gz.asc
-            /tmp/sbom-ghcr.spdx.json
-            /tmp/sbom-dockerhub.spdx.json
-            /tmp/sbom-ghcr.spdx.json.asc
-            /tmp/sbom-dockerhub.spdx.json.asc
+            /tmp/sbom-*.spdx.json
+            /tmp/sbom-*.spdx.json.asc
           body: ${{ steps.extract-release-notes.outputs.release_notes }}
           fail_on_unmatched_files: true
