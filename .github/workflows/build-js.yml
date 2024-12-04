@@ -228,7 +228,7 @@ jobs:
             ${{ steps.package.outputs.archive-name }}
             ${{ steps.package-scoped.outputs.archive-name }}
       - name: Attest packages with SBOM
-        uses: actions/attest-sbom@5026d3663739160db546203eeaffa6aa1c51a4d6
+        uses: actions/attest-sbom@1455967b1b6415d3df9fac31a87500523f7b455c
         with:
           subject-path: |
             ${{ steps.package.outputs.archive-name }}
