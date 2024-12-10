@@ -178,7 +178,7 @@ jobs:
           path: snyk-docker.sarif
       - name: Upload SARIF to dashboard
         if: "!github.event.repository.private"
-        uses: github/codeql-action/upload-sarif@f09c1c0a94de965c15400f5634aa42fac8fb8f88
+        uses: github/codeql-action/upload-sarif@babb554ede22fd5605947329c4d04d8e7a0b8155
         with:
           category: Snyk (Docker)
           sarif_file: snyk-docker.sarif
