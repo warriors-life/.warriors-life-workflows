@@ -222,7 +222,7 @@ jobs:
           name: SBOM
           path: /tmp
       - name: Attest packages with SLSA provenance
-        uses: actions/attest-build-provenance@ef244123eb79f2f7a7e75d99086184180e6d0018
+        uses: actions/attest-build-provenance@520d128f165991a6c774bcb264f323e3d70747f4
         with:
           subject-path: |
             ${{ steps.package.outputs.archive-name }}
